@@ -37,11 +37,15 @@ for n in range(0, Nt):
         log_value_at_a_point[n/nsave] = math.log(u[10]/ (float)(u_0[10]));
         tsave[n/nsave] = t[n]
 
-        ax.plot(x, u_exact, '-', linewidth=2.0, label = r'$u_{exact}$' )  # Plot the exact solution
-        ax.plot(x, u, 'o', linewidth=2.0, fillstyle='none', markeredgewidth = 2, label = r'$u$')  # Plot the numerical solution
-        ax.set_xlabel('x')  # Set x label
+        if n==0:
+            ax.plot(x, u_exact, '-k', linewidth=2.0, label = r'$u_{exact}$' )  # Plot the exact solution
+            ax.plot(x, u, 'ok', linewidth=2.0, fillstyle='none', markeredgewidth = 1, label = r'$u$')  # Plot the numerical solution
+        ax.plot(x, u_exact, '-k', linewidth=2.0 )  # Plot the exact solution
+        ax.plot(x, u, 'ok', linewidth=2.0, fillstyle='none', markeredgewidth = 2)  # Plot the numerical solution
 
-#ax.legend()
+ax.set_xlabel('x')  # Set x label
+ax.set_ylabel('u')  # Set y label
+ax.legend()
 plt.savefig('ut.png')
 #######################################
 # calculate numerical sigma = dissipation rate
