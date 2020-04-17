@@ -9,7 +9,7 @@
 
 * ```params.py``` defines the parameters such as the grid and time step, etc.
 
-* ```test_fft.py``` has a test to validate ```cheb.py```
+* ```test_fft.py``` has a test to decide the ordering of Fourier wave-vectors in python. For details, please read the blog. 
 * ```burger_fourier_PratikAghor.py``` is the main file that does the time marching and saves the data in the data folder.
 * ```post_process.py``` does post processing - reading and plotting the data.
 ![ut](ut_fourier.png)

@@ -24,13 +24,23 @@ xc_max = 2*pi;
 
 Lx = xc_max - xc_min;
 Nx = 8;
+
 dx = 1.0 / (Nx-1);
 
 xc = (1.0*Lx/Nx)*arange(0, Nx);
 
 samplingFreq = dx;
 # u = sin(xc); # Initial condition
+# print "u = sin(xc) \n" 
+
+# u = cos(xc); # Initial condition
+# print "u = cos(xc) \n" 
+
 u = 2.0*sin(xc) + sin(3.0*xc); # Initial condition
+print "u = 2.0*sin(xc) + sin(3.0*xc) \n" 
+
+print "N = ", Nx, "\n"
+
 
 v = fft(u)/len(u); # normalized fft
 

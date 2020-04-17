@@ -29,7 +29,7 @@ Physical coordinates [0, 1]
 '''
 ###########################################
 # print "x=", x
-u0 = sin(pi*xc); # Initial condition
+u0 = -sin(pi*xc); # Initial condition
 u1 = u0;
 
 
