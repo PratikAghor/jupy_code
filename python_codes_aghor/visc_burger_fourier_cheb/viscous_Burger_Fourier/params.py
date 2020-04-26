@@ -29,14 +29,25 @@ dxc = (xc_max-xc_min)/(Nx-1)
 
 dt = 0.002;
 
-xc = arange(xc_min, xc_max+dxc, dxc)
+xc = arange(xc_min, xc_max, dxc)
+# xc = np.linspace(xc_min, xc_max-dxc, Nx)
 
-# print ("xc = \n", xc)
-x = (xc - b*np.ones(Nx))/a;
+print "xc = \n", xc
+x = (xc - b*np.ones(Nx-1))/a;
+
+# _padded for plotting
+xc_padded = arange(xc_min, xc_max+dxc, dxc) 
+x_padded = (xc_padded - b*np.ones(Nx))/a;
 
 kx = zeros(Nx);
 kx[0:Nx/2] = arange(0,Nx/2); kx[Nx/2+1:] = arange(-Nx/2+1,0,1);
 # print "kx=", kx
 
+k = zeros(Nx-1);
+for i in range(0, Nx-1):
+	if i < Nx/2:
+		k[i] = kx[i];
+	else:
+		k[i] = kx[i+1];
 
 #######################################

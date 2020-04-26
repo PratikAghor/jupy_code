@@ -25,27 +25,37 @@ Physical coordinates [0, 1]
 '''
 ###########################################
 # print "x=", x
-u = sin(xc); # Initial condition
 
-alpha = 1j*kx; # real wavenumbers:    exp(alpha*x)
+# Initial condition
+u = sin(xc); 
+
+u_padded = zeros(Nx);
+
+alpha = 1j*k;
 # print "alpha=", alpha
 
-D = a*(alpha); # D = d/d(xc) operator in Fourier space
-# print "D =", '\n', D;
+# Writing some operators for convenience
+# # D = d/d(xc) operator in Fourier space
+# L = linear operator nu*D^2 in Fourier space, diagonal matrix!
+# G = -1/2 D operator in Fourier space
 
-L = nu*D*D;                                     # linear operator nu*D^2 in Fourier space, diagonal matrix!
+D = a*(alpha); 
+L = nu*D*D;                                     
+G = -0.5*D;                                     
 
-G = -0.5*D;                                     # -1/2 D operator in Fourier space
+# A     = (I - dt/2*L)
+A_inv = (np.ones(Nx-1) - (1.0-theta)*dt*L)**(-1);
 
-# A     = (np.ones(Nx) - dt2*L)
-# print "A = ", '\n', A
-A_inv = (np.ones(Nx) - (1.0-theta)*dt*L)**(-1);
-# print "A_inv = ", '\n', A_inv
-B     = np.ones(Nx) + theta*dt*L;
+B     = np.ones(Nx-1) + theta*dt*L;
 
-N1  = G*fft(u*u);                               #-u u_x (spectral), notation N1 = N^n = N(u(n dt))
-N0 = N1;                                        #notation N0 = N^{n-1} = N(u((n-1) dt))
-v  = fft(u);                                    # transform u to spectral
+# writing nonlinear term 
+#-u u_x (spectral), notation N1 = N^n = N(u(n dt))
+#notation N0 = N^{n-1} = N(u((n-1) dt))
+N1  = G*fft(u*u);                               
+N0 = N1;                                        
+
+# transform u to spectral
+v  = fft(u);                                   
 #######################################
 # time marching!
 for n in range (0, Nt):
@@ -56,10 +66,14 @@ for n in range (0, Nt):
     v = A_inv*((B*v) + 1.5*dt*N1 - 0.5*dt*N0);
 
     u = real(ifft( v ))
+	
+	# write u_padded with the last term = u[0] on Nx grid. for plotting purposes 
+    u_padded[0:Nx-1] = u[0:Nx-1]; 
+    u_padded[Nx-1] = u[0]; 
     # save data after every nsave steps
     if ((n % nsave) == 0):
         n_str = str(n)
         filename = "u" + n_str
         hf = h5py.File('data/' + filename +'.h5', 'w') # open file in h5 format
-        hf.create_dataset('u(t)', data=u)
+        hf.create_dataset('u(t)', data=u_padded)
         hf.close()
