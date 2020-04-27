@@ -1,6 +1,8 @@
 from mpl_toolkits.mplot3d import Axes3D
 from matplotlib.collections import LineCollection
-from numpy import pi, cosh, exp, round, zeros, identity, arange, real, cos, sin, multiply, transpose
+from numpy import pi, cosh, exp, round, zeros, identity, arange, real, cos, sin,\
+multiply, transpose, mean, sqrt
+
 from numpy.fft import fft, ifft, fft2, ifft2
 from matplotlib.pyplot import figure
 
@@ -32,13 +34,7 @@ the solution. All computations are performed on (Nyc x Nxc) grid.
 - Pratik Aghor
 '''
 ###########################################
-# Initial condition u0
-u0 = zeros((Nyc, Nxc))
-for i in range(0, Nyc):
-    for j in range(0, Nxc):
-        u0[i, j] = 1.0 + sin(xc[j])*cos(yc[i]);
-# print "u(x, y) = sin(xc[j])*sin(yc[i]) \n"
-
+# Initialize u1 = u0
 u1 = u0;
 
 # alpha_x = complex wavenumber in x direction

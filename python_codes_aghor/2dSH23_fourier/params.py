@@ -1,13 +1,14 @@
 import numpy as np  # Import numpy
 import math
 
-from numpy import pi, cosh, exp, round, zeros, identity, arange, real, cos, sin, multiply, transpose
+from numpy import pi, cosh, exp, round, zeros, identity, arange, real, cos, sin,\
+ multiply, transpose, mean, sqrt
 
 #######################################
 # define parameters
 # Grid and required matrices:
 # c stands for computational domain
-Lx = 2.0*pi; Ly = 2.0*pi;
+Lx = 9.0*pi; Ly = 9.0*pi;
 xc_min = 0.;
 xc_max = 2.0*pi;
 yc_min = 0.;
@@ -22,10 +23,10 @@ a2 = (yc_max - yc_min)*1.0/Ly;
 b2 = yc_min;
 
 
-nsave = 500; # save after nsave timesteps
-Nt = 20000; # # of timesteps
-nu = 1.6; # N(u) = nu u^2 - u^3
-mu = 0.3;
+nsave = 1000; # save after nsave timesteps
+Nt = 40000; # # of timesteps
+nu = 2.2; # 1.6; # N(u) = nu u^2 - u^3
+mu = 0.5; # 0.31;
 kappa = 10; # for the heat equation test
 # theta = 0 => implicit, theta = 1 =>explicit, theta = 0.5 => AM2
 theta = 0.5; # weight to the current time-step value for the linear operator.
@@ -61,4 +62,18 @@ ky[0:Ny/2] = arange(0, Ny/2); ky[Ny/2:] = arange(-Ny/2+1, 0, 1);
 
 # print "kx= \n", kx
 # print "ky= \n", ky
+#######################################
+# Initial condition u0
+u0 = zeros((Nyc, Nxc)); hexa = zeros((Nyc, Nxc))
+for i in range(0, Nyc):
+    for j in range(0, Nxc):
+        u0[i, j] = (1.0 + sin(xc[j])*sin(yc[i]));
+# # print "u(x, y) = sin(xc[j])*sin(yc[i]) \n"
+
+# u = 4*sech(sqrt(xx.^2+yy.^2)/10).*u;
+# for i in range(0, Nyc):
+#     for j in range(0, Nxc):
+#         u0[i, j] = (2.0/ cosh(sqrt((xc[j]+20)**2 + (yc[i]+20)**2)/10.0) )
+#         hexa[i, j] = (cos(xc[j])+ cos((xc[j]+sqrt(3)*yc[i])/2)+ cos((xc[j]-sqrt(3)*yc[i])/2))/3
+#         u0[i, j] = u0[i, j] + (2.0/cosh(sqrt(xc[j]**2+yc[i]**2)/5))*hexa[i, j];
 #######################################

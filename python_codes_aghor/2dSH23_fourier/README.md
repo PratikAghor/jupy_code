@@ -51,7 +51,7 @@ of as diagonals of Nx x Nx matrices at each fiexed i.
 * ```params.py``` defines the parameters such as the grid and time step, etc.
 
 * ```test_fft.py``` has a test to decide the ordering of Fourier wave-vectors in python. For details, please read the blog. 
-* ```burger_fourier_PratikAghor.py``` is the main file that does the time marching and saves the data in the data folder.
+* ```2dSH23_fourier_PratikAghor.py``` is the main file that does the time marching and saves the data in the data folder.
 * ```post_process.py``` does post processing - reading and plotting the data.
 
 
@@ -59,3 +59,9 @@ of as diagonals of Nx x Nx matrices at each fiexed i.
 * In order to run the test for ```test_2d_heat.py```, please do ```bash build_heat_test.sh```
 * It seems to work just fine for a given 1d IC of ```sin(xc)```
 ![ut_heat](ut_heat_fourier.png)
+
+### Final Result:
+* ```mu``` was fiexed to be 0.5 and ```nu``` was fixed at 2.2
+* The domain was chosen to be ```Lx x Ly = 9pi x 9pi```, with discretization ```Ny x Nx = 64 x 64```.
+* For these parameters, localized simultaneous patterns were observed.
+![u_9pi](u40000.png) 
