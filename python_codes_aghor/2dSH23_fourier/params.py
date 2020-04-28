@@ -65,11 +65,11 @@ ky[0:Ny/2] = arange(0, Ny/2); ky[Ny/2:] = arange(-Ny/2+1, 0, 1);
 # print "ky= \n", ky
 #######################################
 # Initial condition u0
-# u0 = zeros((Nyc, Nxc)); hexa = zeros((Nyc, Nxc))
-# for i in range(0, Nyc):
-#     for j in range(0, Nxc):
-#         u0[i, j] = (1.0 + sin(xc[j])*sin(yc[i]));
-# # print "u(x, y) = sin(xc[j])*sin(yc[i]) \n"
+u0 = zeros((Nyc, Nxc)); hexa = zeros((Nyc, Nxc))
+for i in range(0, Nyc):
+    for j in range(0, Nxc):
+        u0[i, j] = (1.0 + sin(xc[j])*sin(yc[i]));
+# print "u(x, y) = sin(xc[j])*sin(yc[i]) \n"
 
 # u = 4*sech(sqrt(xx.^2+yy.^2)/10).*u;
 # for i in range(0, Nyc):
