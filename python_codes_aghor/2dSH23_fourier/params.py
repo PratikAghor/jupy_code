@@ -32,7 +32,7 @@ kappa = 0.1; # for the heat equation test
 # theta = 0 => implicit, theta = 1 =>explicit, theta = 0.5 => AM2
 theta = 0.5; # weight to the current time-step value for the linear operator.
 
-Nx = 32; Ny = 32;
+Nx = 64; Ny = 64;
 
 Nxc = Nx-1; Nyc = Ny - 1;
 
