@@ -9,8 +9,8 @@ import math
 from numpy.linalg import inv
 import h5py # for saving data
 
-import params
-from params import *
+import heat_params
+from heat_params import *
 
 ###########################################
 '''
@@ -37,8 +37,8 @@ the solution. All computations are performed on (Nyc x Nxc) grid.
 u0 = zeros((Nyc, Nxc))
 for i in range(0, Nyc):
     for j in range(0, Nxc):
-        u0[i, j] = sin(xc[j]);
-print "u(x, y) = sin(xc) \n"
+        u0[i, j] = exp( -(x[j] - Lx/2.0)**2 - (y[i] - Ly/2.0)**2) # sin(xc[j]/2);  
+# print "u(x, y) = sin(xc) \n"
 
 u1 = u0;
 

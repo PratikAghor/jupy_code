@@ -8,7 +8,7 @@ from numpy import pi, cosh, exp, round, zeros, identity, arange, real, cos, sin,
 # define parameters
 # Grid and required matrices:
 # c stands for computational domain
-Lx = 9.0*pi; Ly = 9.0*pi;
+Lx = 5; Ly = 5;
 xc_min = 0.;
 xc_max = 2.0*pi;
 yc_min = 0.;
@@ -23,8 +23,8 @@ a2 = (yc_max - yc_min)*1.0/Ly;
 b2 = yc_min;
 
 
-nsave = 1000; # save after nsave timesteps
-Nt = 40000; # 100 #  # # of timesteps
+nsave = 100; # save after nsave timesteps
+Nt = 1000; # 40000; # # of timesteps
 
 nu = 2.2; # 1.6; # N(u) = nu u^2 - u^3
 mu = 0.5; # 0.31;
@@ -39,7 +39,7 @@ Nxc = Nx-1; Nyc = Ny - 1;
 dxc = (xc_max-xc_min)/(Nxc)
 dyc = (yc_max-yc_min)/(Nyc)
 
-dt = 0.01;
+dt = 0.1;
 
 xc = arange(xc_min, xc_max, dxc)
 yc = arange(yc_min, yc_max, dyc)

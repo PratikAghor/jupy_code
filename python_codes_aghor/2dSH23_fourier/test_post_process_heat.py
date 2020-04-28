@@ -5,8 +5,8 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 plt.ioff()
-import params
-from params import *
+import heat_params
+from heat_params import *
 #######################################
 """
 post-process AM2AB2 2dheat/2dSH data
