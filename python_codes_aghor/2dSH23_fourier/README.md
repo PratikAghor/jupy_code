@@ -58,6 +58,7 @@ of as diagonals of Nx x Nx matrices at each fiexed i.
 ### Wrote a test for 2d heat equation:
 * In order to run the test for ```test_2d_heat.py```, please do ```bash build_heat_test.sh```
 * It seems to work just fine for a given 1d IC of ```sin(xc)```
+* tested heat for a Gaussian. As periodic BC => no heat loss => profile should flatten up to a nonzero constant
 ![ut_heat](ut_heat_fourier.png)
 
 ### Final Result:
