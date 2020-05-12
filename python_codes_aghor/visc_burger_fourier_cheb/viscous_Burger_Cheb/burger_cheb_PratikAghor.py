@@ -4,6 +4,7 @@ from numpy.fft import fft,ifft
 from matplotlib.pyplot import figure
 
 import numpy as np  # Import numpy
+import time
 import math
 from numpy.linalg import inv
 import h5py # for saving data
@@ -42,6 +43,8 @@ A[0, 0] = 1.0; A[0, 1:-1] = 0.0;
 A[Nx, 0:Nx-1] = 0.0; A[Nx, Nx] = 1.0;
 #######################################
 # time marching!
+
+t1 = time.time()
 for n in range (0, Nt):
 
     u0_sq = np.multiply(u0, u0);
@@ -70,4 +73,9 @@ for n in range (0, Nt):
         hf = h5py.File('data/' + filename +'.h5', 'w') # open file in h5 format
         hf.create_dataset('u(t)', data=u1)
         hf.close()
+#######################################
+t2 = time.time()
+
+print "time for Cheb spectral = ", t2 - t1, '\n'
+
 #######################################

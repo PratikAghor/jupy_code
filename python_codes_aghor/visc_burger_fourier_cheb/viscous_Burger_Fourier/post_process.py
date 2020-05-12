@@ -16,7 +16,7 @@ post-process AM2AB2 Burger's data
 fig = plt.figure(1)  # Create a figure instance
 ax = fig.gca()
 
-for n in range(0, Nt):
+for n in range(0, Nt+1):
     # read data
     if ((n % nsave) == 0):
 

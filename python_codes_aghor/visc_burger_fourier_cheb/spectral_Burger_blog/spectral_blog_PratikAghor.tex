@@ -179,6 +179,8 @@ $\bar{k} = [0, 1, 2, 3, 4, -3, -2, -1]$. There is an obvious asymmetry apparent 
 From the analysis done in class, we know that the convergence of Fourier spectral method is faster than any algebraic power of $1/N$ (exponential convergence), especially with periodic BC's.
 
 Hence, if we keep enough modes, we can zero-out the highest mode as the coefficients in the expansion of $u$ will drop off fast enough. This way, we keep the $\bar{k}$ symmetric in terms of positive and negative modes present and take $\bar{k} = [0, 1, 2, ..., (N/2)-1, 0, (-N/2)+1, ..., -1]$.
+
+However, because fft assumes periodic BC's we do the calculation on $(N-1)$ grid points where $x_{c} = [0, 2\pi)$, excluding the last grid point. Hence we use $\bar{k} = [0, 1, 2, ..., (N/2)-1, (-N/2)+1, ..., -1]$ in these calculations, removing the redundant higher mode, maintaining the symmetry and $(N-1)$ modes! We pad up the results by writing $u[N-1] = u[0]$, in order to plot the results on the full domain, with the last point included.  
 %-------------------------------------------------------------------
 \subsection{Results}
 %-------------------------------------------------------------------

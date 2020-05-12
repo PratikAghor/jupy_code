@@ -32,15 +32,14 @@ dx = 1.0 / (Nx-1);
 xc = (1.0*Lx/Nx)*arange(0, Nx);
 print"xc = \n", xc
 
-samplingFreq = dx;
-# u = sin(xc); # Initial condition
-# print "u = sin(xc) \n"
+u = sin(xc); # Initial condition
+print "u = sin(xc) \n"
 
 # u = cos(xc); # Initial condition
 # print "u = cos(xc) \n"
 
-u = 2.0*sin(xc) + sin(3.0*xc); # Initial condition
-print "u = 2.0*sin(xc) + sin(3.0*xc) \n"
+#u = 2.0*sin(xc) + sin(3.0*xc); # Initial condition
+#print "u = 2.0*sin(xc) + sin(3.0*xc) \n"
 
 print "N = ", Nx, "\n"
 
@@ -48,9 +47,9 @@ print "N = ", Nx, "\n"
 v = fft(u)/len(u); # normalized fft
 
 # if abs(value) < tol, set it to zero
-tol = 1e-10
-v.real[abs(v.real) < tol] = 0.0
-v.imag[abs(v.imag) < tol] = 0.0
+#tol = 1e-10
+#v.real[abs(v.real) < tol] = 0.0
+#v.imag[abs(v.imag) < tol] = 0.0
 
 # v = v[range(int(len(u)/2))] # Exclude sampling frequency
 

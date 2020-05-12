@@ -1,9 +1,9 @@
 # 1d Viscous Burger's Equation using Fourier Spectral Method
 ## Author: Pratik Aghor
 
-* Time marching 1d viscous Burger's equation using Chebyshev spectral method
+* Time marching 1d viscous Burger's equation using Fourier spectral method
 * In order to run the codes, please do ```bash build.sh```
-* In order to run the test for ```cheb.py```, please do ```bash build_test.sh```
+* In order to run the test for ```test_fft.py```, please do ```bash build_test.sh```
 
 ### Files and usage 
 
