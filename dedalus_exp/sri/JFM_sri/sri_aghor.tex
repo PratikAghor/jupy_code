@@ -4,6 +4,7 @@
 %\usepackage{epstopdf,epsfig}
 \usepackage{newtxtext}
 \usepackage[varvw]{newtxmath}
+\usepackage{cancel}
 \usepackage{natbib}
 \usepackage{hyperref}
 \hypersetup{
@@ -23,7 +24,8 @@
   \corresp{\email{pratik.aghor54@gmail.com}},
   }
 
-\affiliation{\aff{1} Department of Mathematics and Statistics, University of New Hampshire, USA}
+\affiliation{\aff{1} Department of Mathematics and Statistics, University of New 
+Hampshire, USA}
 
 \begin{document}
 \maketitle
@@ -33,7 +35,8 @@ We study stratorotational instability (SRI) with centrifugal bouyancy.
 \end{abstract}
 
 \begin{keywords}
-SRI, Taylor-Couette, stratified flows, instability, bifurcations, nonlinear dynamics, pattern formation
+SRI, Taylor-Couette, stratified flows, instability, bifurcations, nonlinear 
+dynamics, pattern formation
 \end{keywords}
 
 % {\bf MSC Codes }  {\it(Optional)} Please enter your MSC Codes here
@@ -42,36 +45,64 @@ SRI, Taylor-Couette, stratified flows, instability, bifurcations, nonlinear dyna
 \label{sec:intro}
 %--------------------------------------------------------------------
 
-\noindent We start out with trying to reproduce the linear stability results of \citet{lopez_marques_avila_2013} using deadalus's eigenvalue solvers (eigtools). Specifically, the goal is to include centrifugal bouyancy in the Boussinesq approximation and compare the critical Grashof number ($G$) where the instability sets in as a function of the inner Reynolds number $Re_{i}$. 
+\noindent We start out with trying to reproduce the linear stability results of 
+\citet{lopez_marques_avila_2013} using deadalus's eigenvalue solvers (eigtools). 
+Specifically, the goal is to include centrifugal bouyancy in the Boussinesq 
+approximation and compare the critical Grashof number ($G$) where the 
+instability sets in as a function of the inner Reynolds number $Re_{i}$. 
 
 
 We use the governing equations derived in \cite{lopez_marques_avila_2013}. 
 
 
 \begin{subeqnarray}\label{eq:gov_eqns}
-  (\partial_{t} + \boldsymbol{v \cdot\nabla})\boldsymbol{v} & = & - \nabla p + \nabla^{2}\boldsymbol{v} + \alpha g T \hat{z} + \alpha T {\boldsymbol{v}\cdot\nabla}\boldsymbol{v},\\[3pt]
+  (\partial_{t} + \boldsymbol{v \cdot\nabla})\boldsymbol{v} & = & - \nabla p + 
+\nabla^{2}\boldsymbol{v} + \alpha g T \hat{z} + \alpha T 
+{\boldsymbol{v}\cdot\nabla}\boldsymbol{v},\\[3pt]
   (\partial_{t} + \boldsymbol{v\cdot\nabla})T & = & \kappa \nabla^{2} T,\\[3pt]
   \boldsymbol{\nabla \cdot v} & = & 0.
 \end{subeqnarray}
 
-As noted in \cite{lopez_marques_avila_2013}, the traditional Boussinesq approximation can be recovered by replacing the centrifugal term $\alpha T {\boldsymbol{v}\cdot\nabla}\boldsymbol{v}$ by $-\epsilon T {\boldsymbol{v_{b}}\cdot\nabla}\boldsymbol{v_{b}}$ where $v_{b}$ is the known Couette-flow base velocity, given in \cite{chandrasekhar2013hydrodynamic} and can be expressed as $v_{b}(r) = Ar + B/r$. See \cite{lopez_marques_avila_2013} for details.
+As noted in \cite{lopez_marques_avila_2013}, the traditional Boussinesq 
+approximation can be recovered by replacing the centrifugal term $\alpha T 
+{\boldsymbol{v}\cdot\nabla}\boldsymbol{v}$ by $-\epsilon T 
+{\boldsymbol{v_{b}}\cdot\nabla}\boldsymbol{v_{b}}$ where $v_{b}$ is the known 
+Couette-flow base velocity, given in \cite{chandrasekhar2013hydrodynamic} and 
+can be expressed as $v_{b}(r) = Ar + B/r$. See \cite{lopez_marques_avila_2013} 
+for details.
 
-The physical system is that of a standard Taylor-Couette setup with periodic boundaries in both $\theta$- and $z$-directions. The inner and outer cylinders rotate independently at angular velocities $\Omega_{i}$ and $\Omega_{o}$ respectively.\cite{lopez_marques_avila_2013} study quasi-Keplerian regime ($\Omega_{i} > \Omega_{o}$, $r_{i}^{2}\Omega_{i}< r_{o}^{2}\Omega_{o}$ ). A negative temperature gradient in the radial direction is considered with the outer wall temperature fixed at $T_{c} + \Delta T/ 2 $ and inner wall held at $T_{c} - \Delta T/ 2 $, where $T_{c}$ is the mean temperature.
+The physical system is that of a standard Taylor-Couette setup with periodic 
+boundaries in both $\theta$- and $z$-directions. The inner and outer cylinders 
+rotate independently at angular velocities $\Omega_{i}$ and $\Omega_{o}$ 
+respectively.\cite{lopez_marques_avila_2013} study quasi-Keplerian regime 
+($\Omega_{i} > \Omega_{o}$, $r_{i}^{2}\Omega_{i}< r_{o}^{2}\Omega_{o}$ ). A 
+negative temperature gradient in the radial direction is considered with the 
+outer wall temperature fixed at $T_{c} + \Delta T/ 2 $ and inner wall held at 
+$T_{c} - \Delta T/ 2 $, where $T_{c}$ is the mean temperature.
 
-The dimensionless equations use the gap width $d = r_{o} -r_{i}$ as the length scale, viscous time $d^{2}/\nu$ as the time scale, $\Delta T$ as the temperature scale and $(d/\nu)^{2}$ as the pressure scale. Moreover, $T$ is the deviation from the mean temperature $T_{c}$. 
+The dimensionless equations use the gap width $d = r_{o} -r_{i}$ as the length 
+scale, viscous time $d^{2}/\nu$ as the time scale, $\Delta T$ as the temperature 
+scale and $(d/\nu)^{2}$ as the pressure scale. Moreover, $T$ is the deviation 
+from the mean temperature $T_{c}$. 
 
 Accordingly, the velocity and temperature boundary conditions become:
 \begin{subeqnarray}\label{eq:bc}
   u = w = 0 \textrm{ at } r & = &  r_{i}, r_{o},\\[3pt]
-  v = Re_{i} \textrm{ at } r = r_{i} & \textrm{, } & v = Re_{o} \textrm{ at } r = r_{o},\\[3pt]
-  T = -1/2 \textrm{ at } r =  r_{i} & \textrm{, } & T =  1/2 \textrm{ at } r = r_{o},
+  v = Re_{i} \textrm{ at } r = r_{i} & \textrm{, } & v = Re_{o} \textrm{ at } r 
+= r_{o},\\[3pt]
+  T = -1/2 \textrm{ at } r =  r_{i} & \textrm{, } & T =  1/2 \textrm{ at } r = 
+r_{o},
 \end{subeqnarray}
 
 where $r_{i} = \frac{\eta}{1 - \eta}$ and $r_{o} = \frac{1}{1 - \eta}$.
-%--------------------------------------------------------------------
+%----------------------------------------------------------------
 \subsection{Base Flow}
-%--------------------------------------------------------------------
-As given in \citet{lopez_marques_avila_2013}, we use the standard Couette flow profile for azimuthal velocity and impose the no-mass-flux condition axially to obtain an axial base flow that fixes the pressure field. The base flow for temperature is that corresponding to a conduction profile. The axial no-mass-flux condition can be written as:
+%----------------------------------------------------------------
+As given in \citet{lopez_marques_avila_2013}, we use the standard Couette flow 
+profile for azimuthal velocity and impose the no-mass-flux condition axially to 
+obtain an axial base flow that fixes the pressure field. The base flow for 
+temperature is that corresponding to a conduction profile. The axial 
+no-mass-flux condition can be written as:
 \begin{equation}\label{eq:axial_no_mass_flux}
  \int_{r_{i}}^{r_{o}} r w_{b} dr = 0
 \end{equation}
@@ -82,27 +113,44 @@ The steady base-flow is then given by:
   v_{b}(r) & = & Ar + B/r \\[3pt]
   w_{b}(r) & = & G\bigg(C(r^{2} - r^{2}_{i}) + (C(r^{2}_{o} - r^{2}_{i}) + \frac{1}{4}(r^{2}_{o} - r^{2}))\frac{\ln{(r/r_i)}}{\ln{\eta}} \bigg) \\[3pt]
   T_{b}(r) & = & \frac{1}{2} + \frac{\ln{(r/r_i)}}{\ln{\eta}} \\[3pt]
-  p(r, z) & = & p_{0} + G\bigg( 4C + \frac{1}{2} - \frac{1}{\ln{\eta}} \bigg) z + \int_{r_{i}}^{r} (1- \epsilon T_{b} r) v_{b}^{2} \frac{dr}{r}  
+  p(r, z) & = & p_{0} + G\bigg( 4C + \frac{1}{2} - \frac{1}{\ln{\eta}} \bigg) z 
++ \int_{r_{i}}^{r} (1- \epsilon T_{b} r) v_{b}^{2} \frac{dr}{r}  
 \end{subeqnarray}
-%--------------------------------------------------------------------
+%----------------------------------------------------------------
 \subsection{Perturbed Equations:}
-%--------------------------------------------------------------------
-We perturb the governing equations Eqns. \ref{eq:gov_eqns} about the base-flow and substitute $\phi = \phi_{b} + \phi$ where $\phi_{b}$ are as given in Eqns. \ref{eq:base_flow} and $\phi$'s on now become the purbturbations. 
-
+%----------------------------------------------------------------
+We perturb the governing equations Eqns. \ref{eq:gov_eqns} about the base-flow 
+and substitute $\phi = \phi_{b} + \phi$ where $\phi_{b}$ are as given in Eqns. 
+\ref{eq:base_flow} and $\phi$'s on now become the purbturbations. 
 \begin{subeqnarray}\label{eq:perturbed_eqns}
-   \partial_{t}v &=& -(\boldsymbol{v_{b} \cdot\nabla}\boldsymbol{v_{b}} + \boldsymbol{v_{b} \cdot\nabla}\boldsymbol{v} + \boldsymbol{v \cdot\nabla}\boldsymbol{v_{b}} + \boldsymbol{v \cdot\nabla}\boldsymbol{v})\nonumber\\
-  && -\nabla p_{b} - \nabla p + \nabla^{2}\boldsymbol{v_{b}} + \nabla^{2}\boldsymbol{v} + \alpha g T \hat{z} \nonumber\\
-  && + \alpha T {\boldsymbol{v}\cdot\nabla}\boldsymbol{v},   \\[3pt]
-  (\partial_{t} + \boldsymbol{v\cdot\nabla})T & = & \kappa \nabla^{2} T,\\[3pt]
+   \partial_{t}v &=& -(\cancelto{0}{ \boldsymbol{v_{b} 
+\cdot\nabla}\boldsymbol{v_{b}} } + \boldsymbol{v_{b} \cdot\nabla}\boldsymbol{v} + \boldsymbol{v \cdot\nabla}\boldsymbol{v_{b}} + \boldsymbol{v \cdot\nabla}\boldsymbol{v})\nonumber\\
+  && -\nabla p_{b} - \nabla p + \nabla^{2}\boldsymbol{v_{b}} + \nabla^{2}\boldsymbol{v} + \alpha g (T_{b} + T) \hat{z} \nonumber\\
+  && + \alpha (T_{b} + T) (\cancelto{0}{ \boldsymbol{v_{b} \cdot\nabla}\boldsymbol{v_{b}} } + \boldsymbol{v_{b} \cdot\nabla}\boldsymbol{v} + \boldsymbol{v \cdot\nabla}\boldsymbol{v_{b}} + \boldsymbol{v\cdot\nabla}\boldsymbol{v}), \\[3pt]
+%   \partial_{t} T+ \boldsymbol{(v_{b} + v)\cdot\nabla}(T_{b} + T)  & = & \kappa \nabla^{2} T_{b} + \kappa \nabla^{2} T,\nonumber\\
+  \partial_{t} T & = & - (\cancelto{0} {\boldsymbol{v_{b}\cdot\nabla}T_{b} }+ \boldsymbol{v_{b}\cdot\nabla}T + \boldsymbol{v\cdot\nabla}T_{b} + \boldsymbol{v\cdot\nabla}T) + \kappa \nabla^{2} T_{b} + \kappa \nabla^{2} T,\nonumber\\
+  \boldsymbol{\nabla \cdot v} & = & 0.
+\end{subeqnarray}
+We neglect perturbation-perturbation nonlinearities and obtain a linearized set 
+of equations.
+\begin{subeqnarray}\label{eq:linearized_eqns}
+ \partial_{t}v &=& -(\boldsymbol{v_{b} \cdot\nabla}\boldsymbol{v} + \boldsymbol{v \cdot\nabla}\boldsymbol{v_{b}})\nonumber\\
+  && -\nabla p_{b} - \nabla p + \nabla^{2}\boldsymbol{v_{b}} + 
+\nabla^{2}\boldsymbol{v} + \alpha g (T_{b} + T) \hat{z} \nonumber\\
+  && + \alpha T_{b} (\boldsymbol{v_{b} \cdot\nabla}\boldsymbol{v} + \boldsymbol{v \cdot\nabla}\boldsymbol{v_{b}} ),  \\[3pt]
+  %
+  \partial_{t} T & = & - (\boldsymbol{v_{b}\cdot\nabla}T + \boldsymbol{v\cdot\nabla}T_{b} ) + \kappa \nabla^{2} T_{b} + \kappa \nabla^{2} T,\nonumber\\
   \boldsymbol{\nabla \cdot v} & = & 0.
 \end{subeqnarray}
 
 
-%--------------------------------------------------------------------
+
+%----------------------------------------------------------------
 
 %\bibliographystyle{jfm}
 %\bibliography{jfm}
-%Use of the above commands will create a bibliography using the .bib file. Shown below is a bibliography built from individual items. 
+%Use of the above commands will create a bibliography using the .bib file. Shown 
+% below is a bibliography built from individual items. 
 
 \bibliographystyle{jfm}
 \bibliography{bib/jfm} % Path to your References.bib file
