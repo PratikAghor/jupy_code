@@ -1,15 +1,18 @@
 """
 Usage:
-  sri_eigenvalue_3d.py [--re=<reynolds> --eta=<eta> --m=<initial_m> --k=<k> --mu=<mu> --ar=<Gamma> --alpha=<alpha>]
+  sri_eigenvalue_3d.py [--re=<reynolds> --eta=<eta> --G=<grashof> --epsilon=<epsilon> --Pr=<prandtl> --m=<initial_m> --k=<k> --mu=<mu> --ar=<Gamma> --alpha_z=<alpha_z>]
 
 Options:
-  --re=<reynolds>  Reynolds number for simulation [default: 80]
-  --eta=<eta>      Eta - ratio of R1/R2 [default: 0.692520775623]
+  --re=<inner_reynolds>  Reynolds number for simulation [default: 80]
+  --eta=<eta>      Eta - ratio of R1/R2 [default: 0.71]
+  --G=<grashof>    Grashof number [default: 1e4]
+  --epsilon=<epsilon> Relative density [default: 0.2]
+  --Pr<prandtl>     Prandtl number [default: 7.16]
   --m=<initial_m>  m mode [default: 0]
   --k=<k>          k mode [default: 1]
   --mu=<mu>        mu = Omega2/Omega1 [default: 0]
   --ar=<Gamma>     Aspect ratio (height/width) [default: 3]
-  --alpha=<alpha>  z wavenumber [default: 3.13]
+  --alpha_z=<alpha_z>  z wavenumber [default: 3.13]
 """
 
 import numpy as np
@@ -24,9 +27,12 @@ nr = 32
 args=docopt(__doc__)
 Re1=float(args['--re'])
 eta=np.float(args['--eta'])
+G=float(args['--G'])
+epsilon = float(args['--epsilon'])
+Pr = float(args['--Pr'])
 mu = np.float(args['--mu'])
 Gamma = float(args['--ar'])
-alpha = float(args['--alpha'])
+alpha_z = float(args['--alpha_z'])
 m = int(args['--m'])
 k = int(args['--k'])
 
@@ -39,37 +45,28 @@ scale [L] = delta
 scale [T] = delta/(R1 Omega1)
 scale [V] = R1 Omega1
 
-Default parameters from Barenghi (1991, J. Comp. Phys.).
+Trying to implement The Boussinesq approximation in rapidly rotating flows (2013, JFM)
 """
 #derived parameters
 R1 = eta/(1. - eta)
 R2 = 1./(1-eta)
-Omega1 = 1/R1
-Omega2 = mu*Omega1
-nu = R1 * Omega1/Re1
+
 midpoint = R1 + (R2-R1) / 2
-if alpha:
-    Lz = 2*np.pi/alpha
+if alpha_z:
+    Lz = 2*np.pi/alpha_z
 else:
     Lz = Gamma
 
-#Taylor Number
-#Ta = ((1+eta)**4/(64*eta**2) ) * ( (R2-R1)**2 * (R2+R1)**2 * (Omega1-Omega2)**2 ) / nu**2 #Grossman lohse
-#Ta1 = (2*Omega1**2*(R2-R1)**4*eta**2 ) / (nu**2 *(11-eta**2)  )
 A = (1/eta - 1.)*(mu-eta**2)/(1-eta**2)
 B = eta*(1-mu)/((1-eta)*(1-eta**2))
-#Ta = -4*A*Omega1*Re1**2
-logger.info("-4*A = {}".format(-4*A))
-Ta = 64/9. * (Re1*eta/(1-eta))**2 * (1-mu)*(1-4*mu)
-#Ta = -4*Omega1**2 * R1**4 * Re1**2 * (1-mu)*(1-mu/eta**2)/(1-eta**2)**2
-Ro_inv = (2 * Omega2 * (R2-R1) ) /  (np.abs(Omega1-Omega2)*R1 )
 
-logger.info("Re:{:.3e}, eta:{:.4e}, mu:{:.4e}".format(Re1,eta,mu))
-logger.info("Taylor Number:{:.2e}, Ro^(-1):{:.2e}".format(Ta,Ro_inv))
+logger.info("-4*A = {}".format(-4*A))
+
+logger.info("Re:{:.3e}, eta:{:.4e}, G:{:.3e}, epsilon:{:.3e}, Pr:{:.4e}, mu:{:.4e}".format(Re1,eta,G,epsilon,Pr,mu))
 
 logger.info("Lz set to {:.6e}".format(Lz))
 
-variables = ['u','ur','v','vr','w','wr','p']
+variables = ['u','ur','v','vr','w','wr','T','Tr','p', 'pr']
 
 #domain
 r_basis = de.Chebyshev('r', nr, interval=[R1, R2])
@@ -84,11 +81,10 @@ problem = de.EVP(domain, eigenvalue='lambda', variables=variables)
 problem.parameters['eta']=eta
 problem.parameters['mu']=mu
 problem.parameters['Lz']=Lz
-problem.parameters['nu']=nu
 problem.parameters['R1']=R1
 problem.parameters['R2']=R2
-problem.parameters['Omega1']=Omega1
-problem.parameters['Omega2']=Omega2
+problem.parameters['Re_i']=Re1
+problem.parameters['Re_o']=mu*Re1
 
 problem.parameters['pi']=np.pi
 problem.parameters['kz'] = 2*np.pi/Lz * k
@@ -106,12 +102,21 @@ Lap_t --> theta component of vector laplacian
 Lap_z --> z component of vector laplacian
 
 """
+problem.substitutions['r_i'] = 'eta/(1.0 - eta)'
+problem.substitutions['r_o'] = '1.0/(1.0 - eta)'
 
-problem.substitutions['A'] = '(1/eta - 1.)*(mu-eta**2)/(1-eta**2)'
-problem.substitutions['B'] = 'eta*(1-mu)/((1-eta)*(1-eta**2))'
+problem.substitutions['A'] = '(Re_o - eta*Re_i)/(1.0 + eta)'
+problem.substitutions['B'] = 'eta*(Re_i - eta*Re_o)/((1.0-eta)*(1.0-eta**2))'
+problem.substitutions['C'] = '-(4.0*np.log(eta) + (1.0-eta**2)*(3.0-eta**2) )\
+/(16.0*(1.0-eta**2)*(( (1.0+eta**2)*np.log(eta) + (1.0-eta**2) )) )'
 
 problem.substitutions['v0'] = 'A*r + B/r'       #background profile? forcing instead of forcing the boundaries
 problem.substitutions['dv0dr'] = 'A - B/(r*r)'  #d/dr of background forcing
+problem.substitutions['w0'] = 'G*(C*(r**2 - r_i**2) + (C*(r_o**2 - r_i**2) + 0.25*(r_o**2 - r**2))*np.log(r/r_i)/np.log(eta) )'
+problem.substitutions['T0'] = '0.5 + np.log(r/r_i)/np.log(eta)'
+problem.substitutions['dT0dr'] = '1.0/(r*np.log(eta))'
+problem.substitutions['dp0dr(Tb, vb)'] = '1.0 - epsilon*Tb*vb*vb/r'  #d/dr of background pressure
+problem.substitutions['dp0dz'] = '4.0*c + 0.5 -  1.0/np.log(eta)'  #d/dz of background pressure
 
 problem.substitutions['dtheta(f)'] = '1j*m*f'
 problem.substitutions['dz(f)'] = '1j*kz*f'
@@ -124,9 +129,9 @@ problem.substitutions['Lap_t'] = "Lap_s(v, vr) - v + 2*dtheta(u)"
 problem.substitutions['Lap_z'] = "Lap_s(w, wr)"
 
 # momentum equations
-problem.add_equation("r*r*dt(u) - nu*Lap_r - 2*r*v0*v + r*v0*dtheta(u) + r*r*dr(p) = 0")
-problem.add_equation("r*r*dt(v) - nu*Lap_t + r*r*dv0dr*u + r*v0*u + r*v0*dtheta(v) + r*dtheta(p)  = 0")
-problem.add_equation("r*r*dt(w) - nu*Lap_z + r*r*dz(p) + r*v0*dtheta(w) = 0.")
+problem.add_equation("r*r*dt(u) - Lap_r - 2*r*v0*v + r*v0*dtheta(u) + r*r*dr(p) = 0")
+problem.add_equation("r*r*dt(v) - Lap_t + r*r*dv0dr*u + r*v0*u + r*v0*dtheta(v) + r*dtheta(p)  = 0")
+problem.add_equation("r*r*dt(w) - Lap_z + r*r*dz(p) + r*v0*dtheta(w) = 0.")
 
 #continuity
 problem.add_equation("r*ur + u + dtheta(v) + r*dz(w) = 0")
