@@ -26,6 +26,10 @@
 
 \affiliation{\aff{1} Department of Mathematics and Statistics, University of New 
 Hampshire, USA}
+%---------------------------------------------------------------
+
+\newcommand{\del}[1] {\partial{#1}}
+%---------------------------------------------------------------
 
 \begin{document}
 \maketitle
@@ -40,10 +44,10 @@ dynamics, pattern formation
 \end{keywords}
 
 % {\bf MSC Codes }  {\it(Optional)} Please enter your MSC Codes here
-%--------------------------------------------------------------------
+%---------------------------------------------------------------
 \section{Introduction}
 \label{sec:intro}
-%--------------------------------------------------------------------
+%---------------------------------------------------------------
 
 \noindent We start out with trying to reproduce the linear stability results of 
 \citet{lopez_marques_avila_2013} using deadalus's eigenvalue solvers (eigtools). 
@@ -70,7 +74,14 @@ approximation can be recovered by replacing the centrifugal term $\alpha T
 Couette-flow base velocity, given in \cite{chandrasekhar2013hydrodynamic} and 
 can be expressed as $v_{b}(r) = Ar + B/r$. See \cite{lopez_marques_avila_2013} 
 for details.
-
+The dimensionless equations can be written as follows:
+\begin{subeqnarray}\label{eq:gov_eqns}
+  (\partial_{t} + \boldsymbol{v \cdot\nabla})\boldsymbol{v} & = & - \nabla p + 
+\nabla^{2}\boldsymbol{v} + G T \hat{z} + \epsilon T 
+{\boldsymbol{v}\cdot\nabla}\boldsymbol{v},\\[3pt]
+  (\partial_{t} + \boldsymbol{v\cdot\nabla})T & = & \sigma^{-1} \nabla^{2} T,\\[3pt]
+  \boldsymbol{\nabla \cdot v} & = & 0.
+\end{subeqnarray}
 The physical system is that of a standard Taylor-Couette setup with periodic 
 boundaries in both $\theta$- and $z$-directions. The inner and outer cylinders 
 rotate independently at angular velocities $\Omega_{i}$ and $\Omega_{o}$ 
@@ -123,27 +134,40 @@ We perturb the governing equations Eqns. \ref{eq:gov_eqns} about the base-flow
 and substitute $\phi = \phi_{b} + \phi$ where $\phi_{b}$ are as given in Eqns. 
 \ref{eq:base_flow} and $\phi$'s on now become the purbturbations. 
 \begin{subeqnarray}\label{eq:perturbed_eqns}
-   \partial_{t}v &=& -(\cancelto{0}{ \boldsymbol{v_{b} 
+   \partial_{t}\boldsymbol{v} &=& -(\cancelto{0}{ \boldsymbol{v_{b} 
 \cdot\nabla}\boldsymbol{v_{b}} } + \boldsymbol{v_{b} \cdot\nabla}\boldsymbol{v} + \boldsymbol{v \cdot\nabla}\boldsymbol{v_{b}} + \boldsymbol{v \cdot\nabla}\boldsymbol{v})\nonumber\\
-  && -\nabla p_{b} - \nabla p + \nabla^{2}\boldsymbol{v_{b}} + \nabla^{2}\boldsymbol{v} + \alpha g (T_{b} + T) \hat{z} \nonumber\\
-  && + \alpha (T_{b} + T) (\cancelto{0}{ \boldsymbol{v_{b} \cdot\nabla}\boldsymbol{v_{b}} } + \boldsymbol{v_{b} \cdot\nabla}\boldsymbol{v} + \boldsymbol{v \cdot\nabla}\boldsymbol{v_{b}} + \boldsymbol{v\cdot\nabla}\boldsymbol{v}), \\[3pt]
+  && -\nabla p_{b} - \nabla p + \nabla^{2}\boldsymbol{v_{b}} + \nabla^{2}\boldsymbol{v} + G (T_{b} + T) \hat{z} \nonumber\\
+  && + \epsilon (T_{b} + T) (\cancelto{0}{ \boldsymbol{v_{b} \cdot\nabla}\boldsymbol{v_{b}} } + \boldsymbol{v_{b} \cdot\nabla}\boldsymbol{v} + \boldsymbol{v \cdot\nabla}\boldsymbol{v_{b}} + \boldsymbol{v\cdot\nabla}\boldsymbol{v}), \\[3pt]
 %   \partial_{t} T+ \boldsymbol{(v_{b} + v)\cdot\nabla}(T_{b} + T)  & = & \kappa \nabla^{2} T_{b} + \kappa \nabla^{2} T,\nonumber\\
-  \partial_{t} T & = & - (\cancelto{0} {\boldsymbol{v_{b}\cdot\nabla}T_{b} }+ \boldsymbol{v_{b}\cdot\nabla}T + \boldsymbol{v\cdot\nabla}T_{b} + \boldsymbol{v\cdot\nabla}T) + \kappa \nabla^{2} T_{b} + \kappa \nabla^{2} T,\nonumber\\
+  \partial_{t} T & = & - (\cancelto{0} {\boldsymbol{v_{b}\cdot\nabla}T_{b} }+ \boldsymbol{v_{b}\cdot\nabla}T + \boldsymbol{v\cdot\nabla}T_{b} + \boldsymbol{v\cdot\nabla}T) + \sigma^{-1} \nabla^{2} T_{b} + \sigma^{-1} \nabla^{2} T,\nonumber\\
   \boldsymbol{\nabla \cdot v} & = & 0.
 \end{subeqnarray}
 We neglect perturbation-perturbation nonlinearities and obtain a linearized set 
 of equations.
 \begin{subeqnarray}\label{eq:linearized_eqns}
- \partial_{t}v &=& -(\boldsymbol{v_{b} \cdot\nabla}\boldsymbol{v} + \boldsymbol{v \cdot\nabla}\boldsymbol{v_{b}})\nonumber\\
+ \partial_{t}\boldsymbol{v} &=& -(\boldsymbol{v_{b} \cdot\nabla}\boldsymbol{v} + \boldsymbol{v \cdot\nabla}\boldsymbol{v_{b}})\nonumber\\
   && -\nabla p_{b} - \nabla p + \nabla^{2}\boldsymbol{v_{b}} + 
-\nabla^{2}\boldsymbol{v} + \alpha g (T_{b} + T) \hat{z} \nonumber\\
-  && + \alpha T_{b} (\boldsymbol{v_{b} \cdot\nabla}\boldsymbol{v} + \boldsymbol{v \cdot\nabla}\boldsymbol{v_{b}} ),  \\[3pt]
+\nabla^{2}\boldsymbol{v} + G (T_{b} + T) \hat{z} \nonumber\\
+  && + \epsilon T_{b} (\boldsymbol{v_{b} \cdot\nabla}\boldsymbol{v} + \boldsymbol{v \cdot\nabla}\boldsymbol{v_{b}} ),  \\[3pt]
   %
-  \partial_{t} T & = & - (\boldsymbol{v_{b}\cdot\nabla}T + \boldsymbol{v\cdot\nabla}T_{b} ) + \kappa \nabla^{2} T_{b} + \kappa \nabla^{2} T,\nonumber\\
+  \partial_{t} T & = & - (\boldsymbol{v_{b}\cdot\nabla}T + \boldsymbol{v\cdot\nabla}T_{b} ) + \sigma^{-1} \nabla^{2} T_{b} + \sigma^{-1} \nabla^{2} T,\nonumber\\
   \boldsymbol{\nabla \cdot v} & = & 0.
 \end{subeqnarray}
 
-
+Writing component-wise linearized equations:
+\begin{subeqnarray}\label{eq:component_lineqns}
+ \partial_{t}u_{r} &=& (\epsilon T_{b}-1)\bigg(\frac{v_{b}}{r}\frac{\del{u_{r}}}{\del{\theta}} + w_{b}\frac{\del{u_{r}}}{\del{z}} - \frac{2v_{b}u_{\theta}}{r}\bigg)\nonumber\\
+  && -(1- \epsilon T_{b} r) \frac{v_{b}^{2}}{r} - \frac{\del{p}}{\del{r}} + 
+\textrm{Lap}_{r}[u_{r}, \del{u_{r}}/\del{r}],  \\[3pt]
+  %
+  \partial_{t}u_{\theta} &=& (\epsilon T_{b}-1)\bigg(\frac{v_{b}}{r}\frac{\del{u_{\theta}}}{\del{\theta}} + w_{b}\frac{\del{u_{\theta}}}{\del{z}} + u_{r}\frac{dv_{b}}{dr} + \frac{v_{b}u_{r}}{r}\bigg)\nonumber\\
+  && - \frac{1}{r}\frac{\del{p}}{\del{\theta}} + \textrm{Lap}_{\theta}[v_{b}, d{v_{b}}/dr] + \textrm{Lap}_{\theta}[u_{\theta}, \del{u_{\theta}}/\del{r}],  \\[3pt]
+  %
+  \partial_{t}u_{z} &=& (\epsilon T_{b}-1)\bigg(\frac{v_{b}}{r}\frac{\del{u_{z}}}{\del{\theta}} + w_{b}\frac{\del{u_{z}}}{\del{z}} \bigg)\nonumber\\
+  && - \frac{\del{p_{b}}}{\del{z}}- \frac{\del{p}}{\del{z}}  + \textrm{Lap}[w_{b}, d{w_{b}}/dr] + \textrm{Lap}[u_{z}, \del{u_{z}}/\del{r}] + G (T_{b} + T),  \\[3pt]
+  \partial_{t} T & = & - (\boldsymbol{v_{b}\cdot\nabla}T + \boldsymbol{v\cdot\nabla}T_{b} ) +  \sigma^{-1} \nabla^{2} T_{b} +  \sigma^{-1} \nabla^{2} T,\nonumber\\
+  \boldsymbol{\nabla \cdot v} & = & 0.
+\end{subeqnarray}
 
 %----------------------------------------------------------------
 
