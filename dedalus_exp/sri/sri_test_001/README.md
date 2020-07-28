@@ -5,7 +5,6 @@
 * The plan is as follows: implement the linear stability analysis from `The Boussinesq approximation in rapidly rotating flows' by Lopez et. al. using dedalus's EVP solver
 * Wrote a basic version, does not work yet. 
 
-
 ## sri_test_001:
 * Go to dedalus mode.
 * ```python3 sri_eigenvalue_3d_take_2.py``` gives the following result:
