@@ -1,0 +1,71 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{float}
+\usepackage{listings}
+\usepackage[pdftex]{graphicx}
+\usepackage{amssymb}
+\usepackage{subcaption}
+\usepackage{newtxtext}
+\usepackage[varvw]{newtxmath}
+
+%--------------------------------------------------------------------
+
+\newcommand{\del}[1]{\partial{#1}}
+\newcommand{\delsq}[1]{\partial^{2}{#1}}
+\newcommand{\BCs}{boundary conditions}
+%---------------------------------------------------------------
+\title{Asymptotics of Advection Diffusion - Blog}
+
+\author{Pratik Aghor}
+
+% \affiliation{\aff{1} Department of Mathematics and Statistics, University of New 
+% Hampshire, USA}
+%---------------------------------------------------------------
+
+\title{}
+\date{\today}  % Toggle commenting to test
+
+\begin{document}
+
+\maketitle
+%--------------------------------------------------------------------
+\section*{Advection Diffusion}
+%--------------------------------------------------------------------
+We take a general advection diffusion equation from Sec. $7.3$ of \cite{hinch1991perturbation}
+\begin{equation}\label{eq:gov_eqn}
+   \frac{\del{f}}{\del{t}} + \frac{\del{}}{\del{x}} (\omega(\theta)f)= \epsilon \frac{\delsq{f}}{\del{\theta^{2}}}
+\end{equation}
+
+Where $\theta \in [0, 2\pi)$ with periodic \BCs in $\theta$. We also assume $\omega(\theta) > 0$ in the domain and $O(1)$ for all times. A good example would be $\omega(\theta) = 2 + \sin{\theta}$. 
+
+There are two physical processes happening, advection on the fast time-scale $\tau = t$ and diffusion on the slow time-scale$T = \epsilon t$.\cite{hinch1991perturbation} has done the standard multiple scales analysis, which we will repeat here. On top of the two time-scales, spatially, we have a small-parameter attached to the diffusion term. The question we are trying to answer here is the following: Are there any internal/boundary layers due to the singular nature of the spatial problem? We also intend to do the multiple-scales analysis in conjuction to the matched-asymptotics expansion. 
+%--------------------------------------------------------------------
+\subsection{The Method of Multiple Scales:}
+We pose the expansion:
+\begin{equation}\label{eq:mult_scales_exp}
+ f(\theta, t; \epsilon) = f_{0}(\theta, \tau, T) + \epsilon f_{1}(\theta, \tau, T) + \ldots
+\end{equation}
+Substituting Eqn.(\ref{eq:mult_scales_exp}) into Eqn.(\ref{eq:gov_eqn}) and collecting terms at different orders, we obtain:
+\begin{subequations}
+ \begin{align*}
+  O(\epsilon^{0}) &: \frac{\del{f_{0}}}{\del{\tau}} + \frac{\del{(\omega f_{0})}}{\del{\theta} } = 0\\
+  \textrm{i.e.}\\
+  &\frac{1}{\omega}\bigg[\frac{\del{}}{\del{\tau}} + \omega \frac{\del{}}{\del{\theta}}  \bigg] f_{0} = 0
+ \end{align*}
+\end{subequations}
+
+%--------------------------------------------------------------------
+%--------------------------------------------------------------------
+\bibliographystyle{apalike}
+%\bibliographystyle{unsrt} % Use for unsorted references  
+%\bibliographystyle{plainnat} % use this to have URLs listed in References
+%\cleardoublepage
+%\bibliography{References/references} % Path to your References.bib file
+
+\bibliography{bib/references} % Path to your References.bib file
+ \if@openright\cleardoublepage\else\clearpage\fi
+ \cleardoublepage
+ \pagestyle{empty}
+%--------------------------------------------------------------------
+\end{document}
