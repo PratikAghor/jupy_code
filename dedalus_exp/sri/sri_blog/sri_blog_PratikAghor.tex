@@ -1,0 +1,110 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{float}
+\usepackage{listings}
+\usepackage[pdftex]{graphicx}
+\usepackage{amssymb}
+\usepackage{subcaption}
+%--------------------------------------------------------------------
+
+\author{Pratik Aghor}
+\title{SRI Blog}
+\date{\today}  % Toggle commenting to test
+
+\begin{document}
+
+\maketitle
+%--------------------------------------------------------------------
+\section*{SRI: Linear Stability}
+%--------------------------------------------------------------------
+%--------------------------------------------------------------------
+\subsection*{Introduction}
+%--------------------------------------------------------------------
+
+We start the analysis with trying reproduce results of \cite{robins2020viscous}. The physical problem is that of stratified Taylor-Couette flow. 
+TODO: Define dimensionless parameters, describe the problem, write full nonlinear-governing equations and derive the linearized equations (keep nonlinear terms till third order - for nonlinear stability later).
+
+\begin{equation}\label{def:Re}
+ Re = \frac{r_{i}\Omega_{i}d}{\nu}
+\end{equation}
+
+The base state is $(0, \Omega r, 0)$, with 
+ \noindent
+\begin{equation}
+\Omega = A + \frac{B}{r^{2}},
+\qquad
+A = \frac{\mu - \eta^{2}}{1-\eta^{2}},
+\qquad
+B = \frac{\eta^{2}(1-\mu)}{(1+\eta)(1-\eta)^{3}},
+\qquad
+Z = 2A,
+\label{eqn:base_state}
+\end{equation}
+
+Here $Z = (1/r) \partial_{r}(r^{2}\Omega)$ is the constant base-state vorticity. 
+Centrifugal approximation $r\Omega^{2}<<g$ is made to make sure that the base state density stratification is only in the $z$ direction and the constant base-state density contours do not have curvature in the radial direction. The bouyancy frequency $N^{2} = -(g/\rho_{0})d\rho_{0}/dz$ is also assumed to be constant. This can be achieved by making the base state density $\rho_{0}$ a linear function of $z$ so $d\rho_{0}/dz$ is constant. Also, under the Boussinesq approximation, $\rho_{0}$ is assumed more or less constant, but for a weak variation in the axial direction in the bouyancy terms. The Froude number is defined as 
+\begin{equation}\label{def:Fr}
+ Fr = \Omega_{i}/N
+\end{equation}
+such that low Froude number would corrospond to strong stratification. Linear instability modes of the base state are assumed to be of the form  $\tilde{A}(r) \exp{(\sigma_{c}t + i k z + i m \theta)}$, where $\tilde{A}(r)$ is the $r$-dependent complex amplitude. 
+
+
+%--------------------------------------------------------------------
+\subsection*{Linearized Equations:}
+%--------------------------------------------------------------------
+With these assumptions the linearized equations become:
+\begin{subequations}
+ \begin{align}
+  \begin{split}
+  -i\Phi u_{r} & - 2\Omega u_{\theta} \\
+  &= -\frac{dP}{dr} + \frac{\eta}{(1-\eta)} \frac{1}{Re}\bigg[\frac{d^{2}u_{r}}{dr^{2}} + \frac{1}{r}\frac{du_{r}}{dr} - \bigg( \frac{m^{2} + 1}{r^{2}} + k^{2}\bigg)u_{r} - \frac{2 i m u_{\theta}}{r^{2}} \bigg],
+  \end{split}
+ \end{align}
+ %
+ \begin{align}
+  \begin{split}
+   -i\Phi u_{\theta} & + Z u_{r}\\
+   & = \frac{-imP}{r} + \frac{\eta}{(1-\eta)} \frac{1}{Re}\bigg[\frac{d^{2}u_{\theta}}{dr^{2}} + \frac{1}{r}\frac{du_{\theta}}{dr} - \bigg( \frac{m^{2} + 1}{r^{2}} + k^{2}\bigg)u_{\theta} + \frac{2 i m u_{r}}{r^{2}}\bigg],
+  \end{split}
+ \end{align}
+ %
+ \begin{align}
+ -i\Phi u_{z} = -ik P - \rho  + \frac{\eta}{(1-\eta)} \frac{1}{Re}\bigg[\frac{d^{2}u_{z}}{dr^{2}} + \frac{1}{r}\frac{du_{z}}{dr}- \bigg( \frac{m^{2} + 1}{r^{2}} + k^{2}\bigg)u_{z} \bigg],
+ \end{align}
+ %
+ \begin{align}
+  -i \Phi \rho - Fr^{-2}u_{z} = 0,
+ \end{align}
+ %
+ \begin{align}
+  \frac{du_{r}}{dr} + \frac{u_{r}}{r} + \frac{i m u_{\theta}}{r} + i k u_{z} = 0.
+ \end{align}
+\end{subequations}
+Here $(u_{r}, u_{\theta}, u_{z}, \rho, P)$ are complex amplitudes of perturbations in the radial, azimutha, axial velocities and in density and pressure fields respectively. The $\Phi(r) = u\sigma_{c} - m \Omega(r) = i\sigma + \omega - m \Omega(r)$ is called the Lagrangian frequency. 
+
+The no slip boundary conditions for the viscous flow are defined as 
+\begin{equation}
+ u_{r} = u_{\theta} = u_{z} = 0 
+ \qquad
+ \textrm{at } r = r_{i} = \frac{\eta}{1-\eta} \textrm{ and } r = r_{o} = \frac{1}{1-\eta} 
+\end{equation}
+
+%--------------------------------------------------------------------
+
+%--------------------------------------------------------------------
+
+%--------------------------------------------------------------------
+%--------------------------------------------------------------------
+\bibliographystyle{apalike}
+%\bibliographystyle{unsrt} % Use for unsorted references  
+%\bibliographystyle{plainnat} % use this to have URLs listed in References
+%\cleardoublepage
+%\bibliography{References/references} % Path to your References.bib file
+
+\bibliography{bib/references} % Path to your References.bib file
+ \if@openright\cleardoublepage\else\clearpage\fi
+ \cleardoublepage
+ \pagestyle{empty}
+%--------------------------------------------------------------------
+\end{document}
