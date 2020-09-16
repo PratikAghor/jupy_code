@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 plt.ioff()
 
 import sys
-sys.path.append('/home/aghor/Aghor/UNH/independent/tcf_lin_stab_local')
+sys.path.append('/home/aghor/UNH/independent/jupy_codes_local/dedalus_exp/sri/sri_lin_stab')
 
 # for saving figs in this folder
 import os

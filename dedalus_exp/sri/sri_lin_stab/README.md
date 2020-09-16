@@ -7,8 +7,9 @@ Journal of fluid mechanics.
 of Cylindrical Flows, Int Journal of Numerical Methods in Fluids.
 * For details, read the blog. (do ```pdflatex blogname.tex``` in the terminal)
 
-## Linear Stability of Compressible TCF:
+## Linear Stability of Stratified TCF:
 * Started writing a modular python code 
+* **NOTE**: for everything to work smoothly, change sys path from ```sys.path.append('/home/aghor/Aghor/UNH/independent/jupy_codes_local/dedalus_exp/sri/sri_lin_stab')``` to whatever the current path is. 
 * To run tests, do ```bash build_tests.sh```
 * To run the main code, do ```bash build.sh```
 
@@ -24,4 +25,5 @@ of Cylindrical Flows, Int Journal of Numerical Methods in Fluids.
 * Then, using the G2GL matrix, we will obtain values at the GL-grid. 
 * This way, we don't have to invent new boundary conditions (BC's) for density. 
 * Tested both functions, work well for ```N > ~ 63```. For more oscillatory functions, more grid-points will be required. 
-
+* Added a matrix ```D_g2gl(N)``` to obtain the first derivative at the GL-grid from a field defined at the G-grid. 
+* **NOTE**: We prefer using square matrices, so the matrices are padded with zeros. Hence going from G2GL, we first must pad the vector with a zero at the end and then use matmul. Similarly, when going from GL2G, we must ignore the last element obtained from interpolations. 

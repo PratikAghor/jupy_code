@@ -1,4 +1,4 @@
-from numpy import pi,cos,arange, ones
+from numpy import pi, cos, arange, ones
 import numpy as np
 
 def cheb(N):

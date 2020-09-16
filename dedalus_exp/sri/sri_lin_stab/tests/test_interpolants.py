@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 plt.ioff()
 
 import sys
-sys.path.append('/home/aghor/Aghor/UNH/independent/tcf_lin_stab_local')
+sys.path.append('/home/aghor/Aghor/UNH/independent/jupy_codes_local/dedalus_exp/sri/sri_lin_stab')
 
 # for saving figs in this folder
 import os
@@ -30,6 +30,7 @@ N = 63;
 
 G2GL = g2gl(N)
 GL2G = gl2g(N)
+E = D_g2gl(N)
 D, xc = cheb(N);
 xg  = cos(pi*arange(1, (2*N), 2)/(2.0*(N)))  # xg = Chebyshev-Gauss grid
 
@@ -39,9 +40,13 @@ xg  = cos(pi*arange(1, (2*N), 2)/(2.0*(N)))  # xg = Chebyshev-Gauss grid
 # print "D = \n ", D
 n = 3
 u = sin(n * pi * xc); # Initial condition
-
+u_1x_exact = n * pi * cos(n * pi * xc)
 ug = np.matmul(GL2G, u)
+
+u_g2gl_1x = np.matmul(E, ug)
+
 # print("ug = \n", ug)
+# print("len(ug)= \n", len(ug))
 # print("ug[0:-1] = \n", ug[0:-1])
 ###########################################
 fig = plt.figure(1)  # Create a figure instance
@@ -66,6 +71,18 @@ ax.set_xlabel(r'$x$')  # Set x label
 ax.set_ylabel(r'$u$')  # Set y label
 ax.legend()
 plt.savefig('tests/test_g2gl_interpolant.png')
+###########################################
+###########################################
+fig = plt.figure(3)  # Create a figure instance
+ax = fig.gca()
+
+ax.plot(xc, u_g2gl_1x, 'o', linewidth=2.0, fillstyle='none', markeredgewidth = 2, label = "D_G2GL")  # Plot the numerical solution
+ax.plot(xc, u_1x_exact, '-', linewidth=2.0, fillstyle='none', markeredgewidth = 2, label = "exact")  # Plot the numerical solution
+
+ax.set_xlabel(r'$x$')  # Set x label
+ax.set_ylabel(r'$u$')  # Set y label
+ax.legend()
+plt.savefig('tests/test_D_g2gl_interpolant.png')
 ###########################################
 
 ###########################################
