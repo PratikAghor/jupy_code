@@ -6,6 +6,11 @@
 \usepackage[pdftex]{graphicx}
 \usepackage{amssymb}
 \usepackage{subcaption}
+\usepackage{arydshln}
+%--------------------------------------------------------------------
+\newcommand{\bigzero}{\mbox{\normalfont\Large\bfseries 0}}
+\newcommand{\rvline}{\hspace*{-\arraycolsep}\vline\hspace*{-\arraycolsep}}
+
 %--------------------------------------------------------------------
 
 \author{Pratik Aghor}
@@ -102,8 +107,6 @@ Both the grids are represented in the following figure on the computational doma
         \label{fig:grids}
 \end{figure}
 
-
-
 We then need interpolation matrices to transform field quantities between Gauss- and Gauss-Lobatto-grids. As derived in \cite{khorrami1991chebyshev}, the matrices are given by the following expressions:
 \begin{subequations}
  \begin{align}\label{def:G2GL}
@@ -127,13 +130,13 @@ We obtained a good result for a test case of $y = \sin{3x}$ which are summerized
 \centering
 \begin{subfigure}{.5\textwidth}
   \centering
-  \includegraphics[scale=0.35]{Figs/test_g2gl_interpolant.png}
+  \includegraphics[scale=0.4]{Figs/test_g2gl_interpolant.png}
  \subcaption{}
   \label{fig:202a}
 \end{subfigure}%
 \begin{subfigure}{.5\textwidth}
   \centering
-  \includegraphics[scale=0.35]{Figs/test_gl2g_interpolant.png}
+  \includegraphics[scale=0.4]{Figs/test_gl2g_interpolant.png}
   \subcaption{}
   \label{fig:202b}
     \end{subfigure}
@@ -156,14 +159,89 @@ where the elements of $E$ are given by
       \frac{(-1)^{(N+k)} (1- (x_{g})_{k}^{2})^{1/2}}{N}\bigg( \frac{N^{2}}{1+(x_{g})_{k}} - \frac{1}{(1+(x_{g})_{k})^{2}}\bigg), & \text{if}\ j = 0,   k \in [0, N-1] \\
     \end{cases}
 \end{equation}
-A null column ($k=N$) is added to make $E$ a square matrix. We again tested the matrix with the test function $\sin{3\pi x}$, which returned the correct derivative $3\pi\cos{3\pi x}$. 
+A null column ($k=N$) is added to make $E$ a square matrix. 
 
 \begin{figure}[H]
         \centering
-    \includegraphics[scale=0.35]{Figs/test_D_g2gl_interpolant.png}
-            \caption{Gauss and Gauss-Lobatto grids derivative test for $y = \sin{3\pi x}$ }
+    \includegraphics[scale=0.5]{Figs/test_D_g2gl_interpolant.png}
+            \caption{Gauss and Gauss-Lobatto grids derivative test - We again tested the matrix with the test function $\sin{3\pi x}$, which returned the correct derivative $3\pi\cos{3\pi x}$.  }
         \label{fig:test_D_g2gl_interpolant}
 \end{figure}
+%--------------------------
+We are now ready to write the linearized system of Eqns. (\ref{eq:linearized-r-mom}-\ref{eq:linearized-continuity}) in a matrix form. 
+%--------------------------
+\begin{align}\label{eq:hoc_interpolate_face_to_center_naive}
+ \begin{split}
+ &\begin{bmatrix}
+    -im\Omega +  \frac{\eta}{(1-\eta)} \frac{1}{Re} \nabla^{2} 
+   & \rvline 
+  & 
+  \bigg[2\Omega - \frac{2im}{r^{2}}\bigg] I
+  & \rvline
+  & \bigzero 
+  & \rvline 
+  & \bigzero
+  &\rvline
+  & -\tilde{E}\\
+  %
+\hdashline \\
+%
+\bigg[-Z + \frac{\eta}{(1-\eta)} \frac{1}{Re} \nabla^{2} + \frac{2im}{r^{2}}\bigg] I 
+& \rvline 
+& -im\Omega +  \frac{\eta}{(1-\eta)} \frac{1}{Re}\nabla^{2} 
+&\rvline 
+& \bigzero & \rvline &  \bigzero & \rvline & \bigg(\frac{-im}{r}\bigg)I_{g2gl}\\
+%
+\hdashline\\\
+%
+  \bigzero & \rvline & \bigzero &\rvline & -im\Omega +  \frac{\eta}{(1-\eta)} \frac{1}{Re}\nabla^{2} & \rvline & -I & \rvline & (-ik)I_{g2gl}\\
+%
+\hdashline\\
+%
+  \bigzero & \rvline & \bigzero &\rvline & (Fr^{-2})I & \rvline & -im\Omega & \rvline & \bigzero\\
+\hdashline\\
+  \tilde{D}_{1} + \frac{1}{r}I & \rvline & \bigg(\frac{im}{r}\bigg)I &\rvline & (ik)I & \rvline & \bigzero & \rvline & \bigzero\\
+\end{bmatrix}
+\begin{bmatrix}
+ u_{r}\\
+ u_{\theta}\\
+ u_{z}\\
+ \rho\\
+ P\\
+ \end{bmatrix}\\
+&= \sigma_{c} 
+\begin{bmatrix}
+ I & \rvline & \bigzero & \rvline & \bigzero & \rvline & \bigzero
+  &\rvline & \bigzero\\
+  %
+\hdashline \\
+%
+ \bigzero & \rvline & I &\rvline & \bigzero & \rvline & \bigzero & \rvline & \bigzero\\
+%
+\hdashline\\
+%
+  \bigzero & \rvline & \bigzero &\rvline & I & \rvline & \bigzero & \rvline & \bigzero\\
+%
+\hdashline\\
+%
+  \bigzero & \rvline & \bigzero &\rvline & \bigzero & \rvline & I & \rvline & \bigzero\\
+\hdashline\\
+  \bigzero & \rvline & \bigzero &\rvline & \bigzero & \rvline & \bigzero & \rvline & \bigzero\\
+\end{bmatrix}
+\begin{bmatrix}
+ u_{r}\\
+ u_{\theta}\\
+ u_{z}\\
+ \rho\\
+ P\\
+ \end{bmatrix}
+ \end{split}
+\end{align}
+
+where
+\begin{equation}
+ \nabla^{2} = \bigg[\tilde{D}_{2} + \frac{1}{r}\tilde{D}_{1} - \bigg( \frac{m^{2} + 1}{r^{2}} + k^{2}\bigg)I\bigg]
+\end{equation}
 
 %--------------------------------------------------------------------
 
