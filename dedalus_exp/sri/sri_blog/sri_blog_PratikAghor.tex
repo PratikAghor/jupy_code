@@ -10,7 +10,12 @@
 %--------------------------------------------------------------------
 \newcommand{\bigzero}{\mbox{\normalfont\Large\bfseries 0}}
 \newcommand{\rvline}{\hspace*{-\arraycolsep}\vline\hspace*{-\arraycolsep}}
-
+\makeatletter
+\renewcommand*\env@matrix[1][*\c@MaxMatrixCols c]{%
+  \hskip -\arraycolsep
+  \let\@ifnextchar\new@ifnextchar
+  \array{#1}}
+\makeatother
 %--------------------------------------------------------------------
 
 \author{Pratik Aghor}
@@ -48,7 +53,7 @@ Z = 2A,
 \end{equation}
 
 Here $Z = (1/r) \partial_{r}(r^{2}\Omega)$ is the constant base-state vorticity. 
-Centrifugal approximation $r\Omega^{2}<<g$ is made to make sure that the base state density stratification is only in the $z$ direction and the constant base-state density contours do not have curvature in the radial direction. The bouyancy frequency $N^{2} = -(g/\rho_{0})d\rho_{0}/dz$ is also assumed to be constant. This can be achieved by making the base state density $\rho_{0}$ a linear function of $z$ so $d\rho_{0}/dz$ is constant. Also, under the Boussinesq approximation, $\rho_{0}$ is assumed more or less constant, but for a weak variation in the axial direction in the bouyancy terms. The Froude number is defined as 
+Centrifugal approximation $r\Omega^{2}\ll g$ is made to make sure that the base state density stratification is only in the $z$ direction and the constant base-state density contours do not have curvature in the radial direction. The bouyancy frequency $N^{2} = -(g/\rho_{0})d\rho_{0}/dz$ is also assumed to be constant. This can be achieved by making the base state density $\rho_{0}$ a linear function of $z$ so $d\rho_{0}/dz$ is constant. Also, under the Boussinesq approximation, $\rho_{0}$ is assumed more or less constant, but for a weak variation in the axial direction in the bouyancy terms. The Froude number is defined as 
 \begin{equation}\label{def:Fr}
  Fr = \Omega_{i}/N
 \end{equation}
@@ -170,37 +175,107 @@ A null column ($k=N$) is added to make $E$ a square matrix.
 %--------------------------
 We are now ready to write the linearized system of Eqns. (\ref{eq:linearized-r-mom}-\ref{eq:linearized-continuity}) in a matrix form. 
 %--------------------------
+% \begin{align}\label{eq:hoc_interpolate_face_to_center_naive}
+%  \begin{split}
+%  &\begin{bmatrix}
+%     -im\Omega +  \frac{\eta}{(1-\eta)} \frac{1}{Re} \nabla^{2} 
+%    & \rvline 
+%   & 
+%   \bigg[2\Omega - \frac{2im}{r^{2}}\bigg] I
+%   & \rvline
+%   & \bigzero 
+%   & \rvline 
+%   & \bigzero
+%   &\rvline
+%   & -\tilde{E}\\
+%   %
+%   \\
+% \hdashline \\
+% %
+% \bigg[-Z + \frac{\eta}{(1-\eta)} \frac{1}{Re} \nabla^{2} + \frac{2im}{r^{2}}\bigg] I 
+% & \rvline 
+% & -im\Omega +  \frac{\eta}{(1-\eta)} \frac{1}{Re}\nabla^{2} 
+% &\rvline 
+% & \bigzero & \rvline &  \bigzero & \rvline & \bigg(\frac{-im}{r}\bigg)I_{g2gl}\\
+% %
+% \\
+% \hdashline\\
+% %
+%   \bigzero & \rvline & \bigzero &\rvline & -im\Omega +  \frac{\eta}{(1-\eta)} \frac{1}{Re}\nabla^{2} & \rvline & -I & \rvline & (-ik)I_{g2gl}\\
+% %
+% \\
+% \hdashline\\
+% %
+%   \bigzero & \rvline & \bigzero &\rvline & (Fr^{-2})I & \rvline & -im\Omega & \rvline & \bigzero\\
+%  %
+%  \\ 
+% \hdashline\\
+%   \tilde{D}_{1} + \frac{1}{r}I & \rvline & \bigg(\frac{im}{r}\bigg)I &\rvline & (ik)I & \rvline & \bigzero & \rvline & \bigzero\\
+% \end{bmatrix}
+% \begin{bmatrix}
+%  u_{r}\\
+%  u_{\theta}\\
+%  u_{z}\\
+%  \rho\\
+%  P\\
+%  \end{bmatrix}\\
+% &= \sigma_{c} 
+% \begin{bmatrix}
+%  I & \rvline & \bigzero & \rvline & \bigzero & \rvline & \bigzero
+%   &\rvline & \bigzero\\
+%   %
+%   \\
+% \hdashline \\
+% %
+%  \bigzero & \rvline & I &\rvline & \bigzero & \rvline & \bigzero & \rvline & \bigzero\\
+% %
+% \\
+% \hdashline\\
+% %
+%   \bigzero & \rvline & \bigzero &\rvline & I & \rvline & \bigzero & \rvline & \bigzero\\
+% %
+% \\
+% \hdashline\\
+% %
+%   \bigzero & \rvline & \bigzero &\rvline & \bigzero & \rvline & I & \rvline & \bigzero\\
+% %
+% \\
+% \hdashline\\
+%   \bigzero & \rvline & \bigzero &\rvline & \bigzero & \rvline & \bigzero & \rvline & \bigzero\\
+% \end{bmatrix}
+% \begin{bmatrix}
+%  u_{r}\\
+%  u_{\theta}\\
+%  u_{z}\\
+%  \rho\\
+%  P\\
+%  \end{bmatrix}
+%  \end{split}
+% \end{align}
+% 
+% where
+% \begin{equation}
+%  \nabla^{2} = \bigg[\tilde{D}_{2} + \frac{1}{r}\tilde{D}_{1} - \bigg( \frac{m^{2} + 1}{r^{2}} + k^{2}\bigg)I\bigg]
+% \end{equation}
+
 \begin{align}\label{eq:hoc_interpolate_face_to_center_naive}
  \begin{split}
- &\begin{bmatrix}
+ &\begin{bmatrix}%[c|c|c|c|c]
     -im\Omega +  \frac{\eta}{(1-\eta)} \frac{1}{Re} \nabla^{2} 
-   & \rvline 
-  & 
-  \bigg[2\Omega - \frac{2im}{r^{2}}\bigg] I
-  & \rvline
+  & \bigg[2\Omega - \frac{2im}{r^{2}}\bigg] I
   & \bigzero 
-  & \rvline 
   & \bigzero
-  &\rvline
   & -\tilde{E}\\
   %
-\hdashline \\
-%
-\bigg[-Z + \frac{\eta}{(1-\eta)} \frac{1}{Re} \nabla^{2} + \frac{2im}{r^{2}}\bigg] I 
-& \rvline 
+\bigg[-Z + \frac{2im}{r^{2}}\bigg] I 
 & -im\Omega +  \frac{\eta}{(1-\eta)} \frac{1}{Re}\nabla^{2} 
-&\rvline 
-& \bigzero & \rvline &  \bigzero & \rvline & \bigg(\frac{-im}{r}\bigg)I_{g2gl}\\
+& \bigzero &  \bigzero & \bigg(\frac{-im}{r}\bigg)I_{g2gl}\\
 %
-\hdashline\\\
+  \bigzero  & \bigzero & -im\Omega +  \frac{\eta}{(1-\eta)} \frac{1}{Re}\nabla^{2} & -I & (-ik)I_{g2gl}\\
 %
-  \bigzero & \rvline & \bigzero &\rvline & -im\Omega +  \frac{\eta}{(1-\eta)} \frac{1}{Re}\nabla^{2} & \rvline & -I & \rvline & (-ik)I_{g2gl}\\
-%
-\hdashline\\
-%
-  \bigzero & \rvline & \bigzero &\rvline & (Fr^{-2})I & \rvline & -im\Omega & \rvline & \bigzero\\
-\hdashline\\
-  \tilde{D}_{1} + \frac{1}{r}I & \rvline & \bigg(\frac{im}{r}\bigg)I &\rvline & (ik)I & \rvline & \bigzero & \rvline & \bigzero\\
+  \bigzero  & \bigzero  & (Fr^{-2})I  & -im\Omega & \bigzero\\
+ %
+  \tilde{D}_{1} + \frac{1}{r}I & \bigg(\frac{im}{r}\bigg)I & (ik)I & \bigzero & \bigzero\\
 \end{bmatrix}
 \begin{bmatrix}
  u_{r}\\
@@ -211,22 +286,18 @@ We are now ready to write the linearized system of Eqns. (\ref{eq:linearized-r-m
  \end{bmatrix}\\
 &= \sigma_{c} 
 \begin{bmatrix}
- I & \rvline & \bigzero & \rvline & \bigzero & \rvline & \bigzero
-  &\rvline & \bigzero\\
-  %
-\hdashline \\
+ I & \bigzero & \bigzero & \bigzero & \bigzero\\
 %
- \bigzero & \rvline & I &\rvline & \bigzero & \rvline & \bigzero & \rvline & \bigzero\\
 %
-\hdashline\\
+ \bigzero & I & \bigzero & \bigzero & \bigzero\\
 %
-  \bigzero & \rvline & \bigzero &\rvline & I & \rvline & \bigzero & \rvline & \bigzero\\
 %
-\hdashline\\
+  \bigzero & \bigzero & I & \bigzero & \bigzero\\
 %
-  \bigzero & \rvline & \bigzero &\rvline & \bigzero & \rvline & I & \rvline & \bigzero\\
-\hdashline\\
-  \bigzero & \rvline & \bigzero &\rvline & \bigzero & \rvline & \bigzero & \rvline & \bigzero\\
+%
+  \bigzero & \bigzero & \bigzero & I & \bigzero\\
+%
+  \bigzero & \bigzero & \bigzero & \bigzero & \bigzero\\
 \end{bmatrix}
 \begin{bmatrix}
  u_{r}\\
@@ -242,6 +313,8 @@ where
 \begin{equation}
  \nabla^{2} = \bigg[\tilde{D}_{2} + \frac{1}{r}\tilde{D}_{1} - \bigg( \frac{m^{2} + 1}{r^{2}} + k^{2}\bigg)I\bigg]
 \end{equation}
+
+
 
 %--------------------------------------------------------------------
 

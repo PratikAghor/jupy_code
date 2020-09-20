@@ -1,5 +1,5 @@
 #! /bin/bash
 
-python3 thermally_driven_main.py
+python3 sri_lin_stab.py
 
 
