@@ -68,19 +68,19 @@ With these assumptions the linearized equations become:
  \begin{align}\label{eq:linearized-r-mom}
   \begin{split}
   -i\Phi u_{r} & - 2\Omega u_{\theta} \\
-  &= -\frac{dP}{dr} + \frac{\eta}{(1-\eta)} \frac{1}{Re}\bigg[\frac{d^{2}u_{r}}{dr^{2}} + \frac{1}{r}\frac{du_{r}}{dr} - \bigg( \frac{m^{2} + 1}{r^{2}} + k^{2}\bigg)u_{r} - \frac{2 i m u_{\theta}}{r^{2}} \bigg],
+  &= -\frac{dP}{dr} + \frac{\eta}{(1-\eta)} \frac{1}{Re}\left[\frac{d^{2}u_{r}}{dr^{2}} + \frac{1}{r}\frac{du_{r}}{dr} - \left( \frac{m^{2} + 1}{r^{2}} + k^{2}\right)u_{r} - \frac{2 i m u_{\theta}}{r^{2}} \right],
   \end{split}
  \end{align}
  %
  \begin{align}\label{eq:linearized-theta-mom}
   \begin{split}
    -i\Phi u_{\theta} & + Z u_{r}\\
-   & = \frac{-imP}{r} + \frac{\eta}{(1-\eta)} \frac{1}{Re}\bigg[\frac{d^{2}u_{\theta}}{dr^{2}} + \frac{1}{r}\frac{du_{\theta}}{dr} - \bigg( \frac{m^{2} + 1}{r^{2}} + k^{2}\bigg)u_{\theta} + \frac{2 i m u_{r}}{r^{2}}\bigg],
+   & = \frac{-imP}{r} + \frac{\eta}{(1-\eta)} \frac{1}{Re}\left[\frac{d^{2}u_{\theta}}{dr^{2}} + \frac{1}{r}\frac{du_{\theta}}{dr} - \left( \frac{m^{2} + 1}{r^{2}} + k^{2}\right)u_{\theta} + \frac{2 i m u_{r}}{r^{2}}\right],
   \end{split}
  \end{align}
  %
  \begin{align}\label{eq:linearized-z-mom}
- -i\Phi u_{z} = -ik P - \rho  + \frac{\eta}{(1-\eta)} \frac{1}{Re}\bigg[\frac{d^{2}u_{z}}{dr^{2}} + \frac{1}{r}\frac{du_{z}}{dr}- \bigg( \frac{m^{2}}{r^{2}} + k^{2}\bigg)u_{z} \bigg],
+ -i\Phi u_{z} = -ik P - \rho  + \frac{\eta}{(1-\eta)} \frac{1}{Re}\left[\frac{d^{2}u_{z}}{dr^{2}} + \frac{1}{r}\frac{du_{z}}{dr}- \left( \frac{m^{2}}{r^{2}} + k^{2}\right)u_{z} \right],
  \end{align}
  %
  \begin{align}\label{eq:linearized-rho}
@@ -102,7 +102,7 @@ The no slip boundary conditions for the viscous flow are defined as
 %--------------------------------------------------------------------
 \subsection*{Numerical Details:}
 %--------------------------------------------------------------------
-We adapt the standard Chebyeshev spectral method to solve the linearized system of equations, Eqns. (\ref{eq:linearized-r-mom}-\ref{eq:linearized-continuity}). Because we do not have boundary conditions for pressure-perturbation $P$ and density perturbation $\rho$, we should ideally use a staggered grid as suggested by \cite{khorrami1991chebyshev}. However, a quick look at the linearized system given by Eqns. (\ref{eq:linearized-r-mom}-\ref{eq:linearized-continuity}), we only have the $r$ derivative of the pressure perturbation, a Chebyeshev mode expansion of which will need artificial boundary conditions. Hence we only push pressure inside the domain and define it at the Gauss points given by $(x_{g})_{j} = \cos{\bigg[\frac{(2j + 1)\pi}{2N}\bigg]}$ with $j \in [0, N-1]$. We define all the other perturbation fields, namely $(u_{r}, u_{\theta}, uz, \rho)$ at the standard Gauss-Lobatto grid given by $(x_{c})_{j} = \cos{\bigg(\frac{j\pi}{2N}\bigg)}$ with $j \in [0, N]$. In this notation the subscript `$g$' stands for Gauss and the subscript `$c$' stands for the Cheyeshev-Gauss-Lobatto (or simply Gauss-Lobatto) grid. 
+We adapt the standard Chebyeshev spectral method to solve the linearized system of equations, Eqns. (\ref{eq:linearized-r-mom}-\ref{eq:linearized-continuity}). Because we do not have boundary conditions for pressure-perturbation $P$ and density perturbation $\rho$, we should ideally use a staggered grid as suggested by \cite{khorrami1991chebyshev}. However, a quick look at the linearized system given by Eqns. (\ref{eq:linearized-r-mom}-\ref{eq:linearized-continuity}), we only have the $r$ derivative of the pressure perturbation, a Chebyeshev mode expansion of which will need artificial boundary conditions. Hence we only push pressure inside the domain and define it at the Gauss points given by $(x_{g})_{j} = \cos{\left[\frac{(2j + 1)\pi}{2N}\right]}$ with $j \in [0, N-1]$. We define all the other perturbation fields, namely $(u_{r}, u_{\theta}, uz, \rho)$ at the standard Gauss-Lobatto grid given by $(x_{c})_{j} = \cos{\left(\frac{j\pi}{2N}\right)}$ with $j \in [0, N]$. In this notation the subscript `$g$' stands for Gauss and the subscript `$c$' stands for the Cheyeshev-Gauss-Lobatto (or simply Gauss-Lobatto) grid. 
 Both the grids are represented in the following figure on the computational domain of $[-1, 1]$:
 
 \begin{figure}[H]
@@ -160,8 +160,8 @@ where the elements of $E$ are given by
 \begin{equation}
  E_{jk} = \begin{cases}
       \frac{(-1)^{(j + k + 1)} (1- (x_{g})_{k}^{2})^{1/2}}{N((x_{c})_{j} - (x_{g})_{k})^{2}}, & \text{if}\ j \in [1, N-1],   k \in [0, N-1] \\
-      \frac{(-1)^{(k)} (1- (x_{g})_{k}^{2})^{1/2}}{N}\bigg( \frac{N^{2}}{1-(x_{g})_{k}} - \frac{1}{(1-(x_{g})_{k})^{2}}\bigg), & \text{if}\ j = 0,   k \in [0, N-1] \\
-      \frac{(-1)^{(N+k)} (1- (x_{g})_{k}^{2})^{1/2}}{N}\bigg( \frac{N^{2}}{1+(x_{g})_{k}} - \frac{1}{(1+(x_{g})_{k})^{2}}\bigg), & \text{if}\ j = 0,   k \in [0, N-1] \\
+      \frac{(-1)^{(k)} (1- (x_{g})_{k}^{2})^{1/2}}{N}\left( \frac{N^{2}}{1-(x_{g})_{k}} - \frac{1}{(1-(x_{g})_{k})^{2}}\right), & \text{if}\ j = 0,   k \in [0, N-1] \\
+      \frac{(-1)^{(N+k)} (1- (x_{g})_{k}^{2})^{1/2}}{N}\left( \frac{N^{2}}{1+(x_{g})_{k}} - \frac{1}{(1+(x_{g})_{k})^{2}}\right), & \text{if}\ j = 0,   k \in [0, N-1] \\
     \end{cases}
 \end{equation}
 A null column ($k=N$) is added to make $E$ a square matrix. 
@@ -181,7 +181,7 @@ We are now ready to write the linearized system of Eqns. (\ref{eq:linearized-r-m
 %     -im\Omega +  \frac{\eta}{(1-\eta)} \frac{1}{Re} \nabla^{2} 
 %    & \rvline 
 %   & 
-%   \bigg[2\Omega - \frac{2im}{r^{2}}\bigg] I
+%   \left[2\Omega - \frac{2im}{r^{2}}\right] I
 %   & \rvline
 %   & \bigzero 
 %   & \rvline 
@@ -192,11 +192,11 @@ We are now ready to write the linearized system of Eqns. (\ref{eq:linearized-r-m
 %   \\
 % \hdashline \\
 % %
-% \bigg[-Z + \frac{\eta}{(1-\eta)} \frac{1}{Re} \nabla^{2} + \frac{2im}{r^{2}}\bigg] I 
+% \left[-Z + \frac{\eta}{(1-\eta)} \frac{1}{Re} \nabla^{2} + \frac{2im}{r^{2}}\right] I 
 % & \rvline 
 % & -im\Omega +  \frac{\eta}{(1-\eta)} \frac{1}{Re}\nabla^{2} 
 % &\rvline 
-% & \bigzero & \rvline &  \bigzero & \rvline & \bigg(\frac{-im}{r}\bigg)I_{g2gl}\\
+% & \bigzero & \rvline &  \bigzero & \rvline & \left(\frac{-im}{r}\right)I_{g2gl}\\
 % %
 % \\
 % \hdashline\\
@@ -210,7 +210,7 @@ We are now ready to write the linearized system of Eqns. (\ref{eq:linearized-r-m
 %  %
 %  \\ 
 % \hdashline\\
-%   \tilde{D}_{1} + \frac{1}{r}I & \rvline & \bigg(\frac{im}{r}\bigg)I &\rvline & (ik)I & \rvline & \bigzero & \rvline & \bigzero\\
+%   \tilde{D}_{1} + \frac{1}{r}I & \rvline & \left(\frac{im}{r}\right)I &\rvline & (ik)I & \rvline & \bigzero & \rvline & \bigzero\\
 % \end{bmatrix}
 % \begin{bmatrix}
 %  u_{r}\\
@@ -255,27 +255,27 @@ We are now ready to write the linearized system of Eqns. (\ref{eq:linearized-r-m
 % 
 % where
 % \begin{equation}
-%  \nabla^{2} = \bigg[\tilde{D}_{2} + \frac{1}{r}\tilde{D}_{1} - \bigg( \frac{m^{2} + 1}{r^{2}} + k^{2}\bigg)I\bigg]
+%  \nabla^{2} = \left[\tilde{D}_{2} + \frac{1}{r}\tilde{D}_{1} - \left( \frac{m^{2} + 1}{r^{2}} + k^{2}\right)I\right]
 % \end{equation}
 
 \begin{align}\label{eq:hoc_interpolate_face_to_center_naive}
  \begin{split}
  &\begin{bmatrix}%[c|c|c|c|c]
-    -im\Omega +  \frac{\eta}{(1-\eta)} \frac{1}{Re} \nabla^{2} 
-  & \bigg[2\Omega - \frac{2im}{r^{2}}\bigg] I
+    -im\Omega +  \frac{\eta}{(1-\eta)} \frac{1}{Re} (\nabla^{2} - \frac{1}{r^{2}} ) 
+  & \left[2\Omega - \frac{2im}{r^{2}}\right] I
   & \bigzero 
   & \bigzero
   & -\tilde{E}\\
   %
-\bigg[-Z + \frac{2im}{r^{2}}\bigg] I 
-& -im\Omega +  \frac{\eta}{(1-\eta)} \frac{1}{Re}\nabla^{2} 
-& \bigzero &  \bigzero & \bigg(\frac{-im}{r}\bigg)I_{g2gl}\\
+\left[-Z + \frac{2im}{r^{2}}\right] I 
+& -im\Omega +  \frac{\eta}{(1-\eta)} \frac{1}{Re}(\nabla^{2} - \frac{1}{r^{2}} )  
+& \bigzero &  \bigzero & \left(\frac{-im}{r}\right)I_{g2gl}\\
 %
-  \bigzero  & \bigzero & -im\Omega +  \frac{\eta}{(1-\eta)} \frac{1}{Re}(\nabla^{2} - \frac{1}{r^{2}})& -I & (-ik)I_{g2gl}\\
+  \bigzero  & \bigzero & -im\Omega +  \frac{\eta}{(1-\eta)} \frac{1}{Re} \nabla^{2}& -I & (-ik)I_{g2gl}\\
 %
   \bigzero  & \bigzero  & (Fr^{-2})I  & -im\Omega & \bigzero\\
  %
-  \tilde{D}_{1} + \frac{1}{r}I & \bigg(\frac{im}{r}\bigg)I & (ik)I & \bigzero & \bigzero\\
+  \tilde{D}_{1} + \frac{1}{r}I & \left(\frac{im}{r}\right)I & (ik)I & \bigzero & \bigzero\\
 \end{bmatrix}
 \begin{bmatrix}
  u_{r}\\
@@ -311,7 +311,7 @@ We are now ready to write the linearized system of Eqns. (\ref{eq:linearized-r-m
 
 where
 \begin{equation}
- \nabla^{2} = \bigg[\tilde{D}_{2} + \frac{1}{r}\tilde{D}_{1} - \bigg( \frac{m^{2} + 1}{r^{2}} + k^{2}\bigg)I\bigg]
+ \nabla^{2} = \left[\tilde{D}_{2} + \frac{1}{r}\tilde{D}_{1} - \left( \frac{m^{2}}{r^{2}} + k^{2}\right)I\right]
 \end{equation}
 
 

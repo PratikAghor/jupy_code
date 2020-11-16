@@ -59,7 +59,7 @@ B42 = A00 = np.zeros((Nr+1, Nr+1), dtype=complex); B43 = A00 = np.zeros((Nr+1, N
 # scalar Laplacian
 def Lap_s(k):
     Lap_s = D2r + np.multiply(oneByr, D1r) \
-- np.multiply( (m**2+1.0)*(np.multiply(oneByr, oneByr)) + k**2 , D0r)
+- np.multiply( (m**2)*(np.multiply(oneByr, oneByr)) + k**2 , D0r)
     return Lap_s
 ###########################################
 """
@@ -80,15 +80,15 @@ for k_counter in range(0, Nk):
     k = kvec[k_counter]
     Lap = Lap_s(k)
 
-    A00 = 1j*m*Omega*D0r + (eta/(1.0-eta))*(1.0/Re)*Lap
+    A00 = 1j*m*Omega*D0r + (eta/(1.0-eta))*(1.0/Re)*(Lap - np.multiply(oneByr, oneByr)*D0r)
     A01 = np.multiply( (2.0*Omega - 2.0*1j*m*np.multiply(oneByr, oneByr)), D0r)
     A04 = - D1_g2gl_c
 
     A10 = np.multiply((- Z + 2.0*1j*m*np.multiply(oneByr, oneByr)), D0r)
-    A11 = 1j*m*Omega*D0r + (eta/(1.0-eta))*(1.0/Re)*Lap
+    A11 = 1j*m*Omega*D0r + (eta/(1.0-eta))*(1.0/Re)*(Lap - np.multiply(oneByr, oneByr)*D0r)
     A14 = np.multiply(-1j*m*oneByr, D0_g2gl)
 
-    A22 = 1j*m*Omega*D0r + (eta/(1.0-eta))*(1.0/Re)*(Lap - np.multiply(oneByr, oneByr)*D0r)
+    A22 = 1j*m*Omega*D0r + (eta/(1.0-eta))*(1.0/Re)*Lap
     A23 = -D0r
     A24 = (-1j*k)*D0_g2gl
 
