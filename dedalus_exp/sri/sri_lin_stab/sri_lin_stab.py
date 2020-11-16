@@ -1,4 +1,5 @@
 from numpy import pi, cos, arange, ones
+from scipy.linalg import eig
 
 import numpy as np
 import matplotlib
@@ -87,7 +88,7 @@ for k_counter in range(0, Nk):
     A11 = 1j*m*Omega*D0r + (eta/(1.0-eta))*(1.0/Re)*Lap
     A14 = np.multiply(-1j*m*oneByr, D0_g2gl)
 
-    A22 = 1j*m*Omega*D0r + (eta/(1.0-eta))*(1.0/Re)*Lap
+    A22 = 1j*m*Omega*D0r + (eta/(1.0-eta))*(1.0/Re)*(Lap - np.multiply(oneByr, oneByr)*D0r)
     A23 = -D0r
     A24 = (-1j*k)*D0_g2gl
 
@@ -131,3 +132,5 @@ for k_counter in range(0, Nk):
     (1) Solve the eigenvalue problem Ax = sigma_c Bx
     (2) Perhaps it is beneficial to define \rho at the Gauss-Grid
     """
+    Sigma, V =  eig(A, b=B)
+    print("sigma[0] = ", Sigma )

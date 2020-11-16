@@ -80,7 +80,7 @@ With these assumptions the linearized equations become:
  \end{align}
  %
  \begin{align}\label{eq:linearized-z-mom}
- -i\Phi u_{z} = -ik P - \rho  + \frac{\eta}{(1-\eta)} \frac{1}{Re}\bigg[\frac{d^{2}u_{z}}{dr^{2}} + \frac{1}{r}\frac{du_{z}}{dr}- \bigg( \frac{m^{2} + 1}{r^{2}} + k^{2}\bigg)u_{z} \bigg],
+ -i\Phi u_{z} = -ik P - \rho  + \frac{\eta}{(1-\eta)} \frac{1}{Re}\bigg[\frac{d^{2}u_{z}}{dr^{2}} + \frac{1}{r}\frac{du_{z}}{dr}- \bigg( \frac{m^{2}}{r^{2}} + k^{2}\bigg)u_{z} \bigg],
  \end{align}
  %
  \begin{align}\label{eq:linearized-rho}
@@ -271,7 +271,7 @@ We are now ready to write the linearized system of Eqns. (\ref{eq:linearized-r-m
 & -im\Omega +  \frac{\eta}{(1-\eta)} \frac{1}{Re}\nabla^{2} 
 & \bigzero &  \bigzero & \bigg(\frac{-im}{r}\bigg)I_{g2gl}\\
 %
-  \bigzero  & \bigzero & -im\Omega +  \frac{\eta}{(1-\eta)} \frac{1}{Re}\nabla^{2} & -I & (-ik)I_{g2gl}\\
+  \bigzero  & \bigzero & -im\Omega +  \frac{\eta}{(1-\eta)} \frac{1}{Re}(\nabla^{2} - \frac{1}{r^{2}})& -I & (-ik)I_{g2gl}\\
 %
   \bigzero  & \bigzero  & (Fr^{-2})I  & -im\Omega & \bigzero\\
  %
