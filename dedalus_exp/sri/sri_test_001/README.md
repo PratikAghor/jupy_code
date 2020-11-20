@@ -21,3 +21,8 @@
 
 * TODO: verify the code with the published literature
 * TODO: add functionality so that parameters can be passed as args
+
+## sri_eigenvalue_3d_take_3:
+* is a preliminary version of the SRI linear stability problem derived in `Viscous and inviscid strato-rotational instability by Robins et. al. (2020, JFM)'
+* This does not consider the effects of Boussinesq approximation due to centrifugal forces and is in a regime where density variation is only considered in the axial direction. 
+* Need to verify the results of Robins et. al. (2020, JFM) using a better version of this code.
