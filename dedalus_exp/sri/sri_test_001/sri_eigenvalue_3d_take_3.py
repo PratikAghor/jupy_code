@@ -19,12 +19,16 @@ import numpy as np
 from dedalus import public as de
 import logging
 from docopt import docopt
-from eigentools import Eigenproblem
+from eigentools import Eigenproblem, CriticalFinder
+import time
 logger = logging.getLogger(__name__)
+from mpi4py import MPI
+
 """
 Trying to implement Viscous and inviscid strato-rotational instability by Robins et. al. (2020, JFM)
 """
-
+comm = MPI.COMM_WORLD
+file_name = 'sri_growth_rates'
 nr = 32
 #args=docopt(__doc__)
 
@@ -32,13 +36,13 @@ nr = 32
 # Gamma = 10.0; # aspect ratio - in Hyun and Park = H/L
 eta = 0.9; # eta = r_i/r_o, radius ratio
 mu = 0.4; # Omega_o/Omega_i
-Re1 = 100;
+Re1 = 200;
 Fr = 1.0;
 oneByFrsq = 1.0/(Fr**2)
-alpha_z=3.13
+alpha_z = 0.25*np.pi
 
 # other parameters
-m = 1
+m = 0
 k = 4
 
 #derived parameters
@@ -58,7 +62,7 @@ variables = ['u','ur','v','vr','w','wr','rho','p'] #
 r_basis = de.Chebyshev('r', nr, interval=[R1, R2])
 
 bases = [r_basis]
-domain = de.Domain(bases)
+domain = de.Domain(bases, comm=MPI.COMM_SELF)
 
 #problem
 problem = de.EVP(domain, eigenvalue='sigma_c', variables=variables)
@@ -75,8 +79,10 @@ problem.parameters['Fr']=Fr
 # problem.parameters['Pr']=Pr
 # problem.parameters['epsilon']=epsilon
 problem.parameters['pi']=np.pi
-problem.parameters['kz'] = (2*np.pi/Lz) * k
 problem.parameters['m'] = m
+problem.parameters['k'] = k
+problem.parameters['kz'] = (2*np.pi/Lz) * k
+
 
 #Substitutions
 
@@ -138,9 +144,50 @@ problem.add_bc("right(w) = 0")
 
 
 ep = Eigenproblem(problem)
+#
+# growth, index, freq = ep.growth_rate({})
+#
+# logger.info("Growth rate = {:16.15e}; frequency = {:16.15e}".format(growth, freq[0]))
 
-growth, index, freq = ep.growth_rate({})
+def shim(x,y):
+    gr, indx, freq = ep.growth_rate({"Re_i":x,"k":y})
+    ret = gr+1j*freq
+    if type(ret) == np.ndarray:
+        return ret[0]
+    else:
+        return ret
 
-logger.info("Growth rate = {:16.15e}; frequency = {:16.15e}".format(growth, freq[0]))
+cf = CriticalFinder(shim, comm)
+
+# generating the grid is the longest part
+start = time.time()
+mins = np.array((100, 1))
+maxs = np.array((500, 4))
+nums = np.array((20, 20))
+
+try:
+    cf.load_grid('{}.h5'.format(file_name))
+except:
+    cf.grid_generator(mins, maxs, nums)
+    if comm.rank == 0:
+        cf.save_grid(file_name)
+
+end = time.time()
+if comm.rank == 0:
+    print("grid generation time: {:10.5f} sec".format(end-start))
+
+cf.root_finder()
+crit = cf.crit_finder(find_freq = True)
+problem.parameters['m'] = m
+problem.parameters['k'] = k
+
+if comm.rank == 0:
+    print("crit = {}".format(crit))
+    print("critical wavenumber k = {:10.5f}".format(crit[1]))
+    print("critical Re = {:10.5f}".format(crit[0]))
+    print("critical freq = {:10.5f}".format(crit[2]))
+
+    cf.plot_crit(title=file_name, transpose=True, xlabel='k', ylabel='Re')
+
 
 #ep.spectrum(spectype='hires')
