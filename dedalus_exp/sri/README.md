@@ -22,3 +22,8 @@
 
 * TODO: verify the code with the published literature
 * TODO: add functionality so that parameters can be passed as args
+
+## sri_lin_stab_002:
+* Started writing my own solver for SRI, inspired by Dr Luke-Robins's SRI code for the JFM article: Viscous and inviscid strato-rotational instabilities, Robins et. al., JFM 2020
+* The code was available here: https://github.com/Luke-Robins/Viscous-and-Inviscid-Strato-Rotational-Instability-Solver
+* The aim is to reproduce the results of the above article in detail, to begin with.  
