@@ -1,0 +1,38 @@
+#######################################
+# spin-up Hyun and Park JFM, 1992;
+# A compact FDM on staggered grid for Navier-Stokes flows, Zhang et. al., Int. J. Numer. Meth. Fluids. 2006;
+# Author: Pratik Aghor
+import numpy as np
+import interpolate
+from interpolate import *
+import params
+from params import *
+
+#Import plotting functions:
+import matplotlib as mpl
+from mpl_toolkits.mplot3d import Axes3D
+import matplotlib.pyplot as plt
+#######################################
+X, Y = np.meshgrid(x_full, y_full)
+color_map="coolwarm"
+
+for nt in range(0, Nt+1):
+    if(nt % nsave == 0):
+        u = np.loadtxt('data/u'+str(nt)+'.asc')
+        # v = np.loadtxt('data/v'+str(nt)+'.asc')
+
+        fig = plt.figure(1)  # Create a figure instance
+        ax = fig.gca()  # projection='3d' to Get current axes in 3D projection
+        ax.contourf(X, Y, u, cmap=color_map)
+        ax.set_xlabel(r'$x$')  # Set x label
+        ax.set_ylabel(r'$y$')  # Set y label
+        plt.savefig('data/u'+str(nt)+'_contours.png')
+
+        # fig = plt.figure(2)  # Create a figure instance
+        # ax = fig.gca()  # projection='3d' to Get current axes in 3D projection
+        # ax.contourf(Y, X, v, cmap=color_map)
+        # ax.set_xlabel(r'$x$')  # Set x label
+        # ax.set_ylabel(r'$y$')  # Set y label
+        # plt.savefig('data/v'+str(nt)+'_contours.png')
+
+#######################################
