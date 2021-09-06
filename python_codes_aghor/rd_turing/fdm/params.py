@@ -9,13 +9,16 @@ from interpolate import *
 #######################################
 #######################################
 # domain
-nx = 64; ny = 32
+nx = 64; ny = 16
 
-xmin = 0.0; xmax = 4*np.pi;
+xmin = 0.0; xmax = 8.0*np.pi;
 dx = (xmax-xmin)/(float(nx));
 
-ymin = 0.0; ymax = 2*np.pi;
+ymin = 0.0; ymax = 2.0*np.pi;
 dy = (ymax-ymin)/(float(ny));
+
+Lx = xmax - xmin
+Ly = ymax - ymin
 
 x = np.linspace(xmin, xmax-dx, nx); # NOTE: last point xmax not included
 y = np.linspace(ymin, ymax-dx, ny); # NOTE: last point xmax not included
@@ -23,24 +26,20 @@ y = np.linspace(ymin, ymax-dx, ny); # NOTE: last point xmax not included
 x_full = np.linspace(xmin, xmax, nx+1); # for plotting
 y_full = np.linspace(ymin, ymax, ny+1); # for plotting
 
-A1x_colloc_pbc, B1x_colloc_pbc = create_matrices_interpolate_1_colloc_pbc(x)
-A2x_colloc_pbc, B2x_colloc_pbc = create_matrices_interpolate_2_colloc_pbc(x)
-
-A1y_colloc_pbc, B1y_colloc_pbc = create_matrices_interpolate_1_colloc_pbc(y)
-A2y_colloc_pbc, B2y_colloc_pbc = create_matrices_interpolate_2_colloc_pbc(y)
-
-# print('np.shape(B2x_colloc_pbc) =', '\n', np.shape(B2x_colloc_pbc))
-# print('np.shape(A2y_colloc_pbc) =', '\n', np.shape(A2y_colloc_pbc))
+Dx = get_d1x_mat(nx+2, dx)
+D2x = get_d2x_mat(nx+2, dx)
+Dy = get_d1y_mat(ny+2, dy)
+D2y = get_d2y_mat(ny+2, dy)
 
 #######################################
 # params
-a = 1
-b = 5
-d = 60
+a = 0
+b = 1
+d = 100
 
 # time stuff
 t = 0
-dt = 1e-3
-Nt = 20000 # # time steps
-nsave = 100
+dt = 1e-4
+Nt = 500000 # # time steps
+nsave = 1000
 #######################################

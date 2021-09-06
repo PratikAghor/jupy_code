@@ -707,7 +707,7 @@ def create_matrices_interpolate_2_colloc_pbc(x):
     x: grid (where f is defined)
 
     Outputs:
-    A, B to solve A varphi' = B varphi
+    A, B to solve A varphi'' = B varphi
 	"""
 	n = len(x)
 	dx = (x[n-1] - x[0])/(n - 1)
@@ -769,8 +769,8 @@ def interpolate_colloc(f, x, A, B):
 
 	rhs = np.matmul(B, f)
 
-	f_at_face = qrsolve(A, rhs)
+	# f_at_face = qrsolve(A, rhs)
 
-	# f_at_center = solve(A, rhs)
+	f_at_center = solve(A, rhs)
 	return f_at_face
 #######################################
